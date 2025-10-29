@@ -1,0 +1,53 @@
+---
+export interface Props {
+	title: string;
+	description?: string;
+}
+
+const { title, description = "Proyecto Dronwind con Astro, Vue, Tailwind y GSAP" } = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content={description} />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<title>{title}</title>
+		
+		<!-- Google Fonts - Montserrat -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+		
+		<!-- Preload GSAP for better performance -->
+		<link rel="modulepreload" href="/src/utils/gsap.ts" />
+	</head>
+	<body class="min-h-screen bg-gray-50 text-gray-900">
+		<slot />
+		
+		<!-- Scripts al final del body para mejor rendimiento -->
+		<script>
+			// Configuración global para GSAP en el cliente
+			if (typeof window !== 'undefined') {
+				// Aquí puedes agregar configuraciones globales de GSAP
+				console.log('GSAP ready for animations');
+			}
+		</script>
+	</body>
+</html>
+
+<style>
+	/* Importar Tailwind CSS */
+	@import '../styles/global.css';
+	
+	/* Estilos globales adicionales */
+	html {
+		scroll-behavior: smooth;
+	}
+	
+	body {
+		font-family: system-ui, sans-serif;
+	}
+</style>
