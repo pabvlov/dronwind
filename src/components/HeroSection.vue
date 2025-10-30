@@ -26,7 +26,7 @@
     </div>
     
     <!-- Silueta de edificios en la parte inferior -->
-    <div class="absolute bottom-0 left-0 right-0 w-full pointer-events-none z-10">
+    <div class="absolute bottom-0 left-0 right-0 w-full pointer-events-none z-10" ref="buildingsRef">
       <img 
         src="/assets/images/buildings-silouette.svg"
         alt="City Skyline"
@@ -52,6 +52,7 @@ const props = defineProps<Props>();
 const heroRef = ref<HTMLElement>();
 const titleRef = ref<HTMLElement>();
 const subtitleRef = ref<HTMLElement>();
+const buildingsRef = ref<HTMLElement>();
 const floatingElements = ref<HTMLElement[]>([]);
 
 // Posiciones iniciales de los drones (lejos del centro)
@@ -59,6 +60,26 @@ const dronePositions = ref<Array<{x: number, y: number}>>([]);
 
 // Timeline principal
 let mainTimeline: gsap.core.Timeline | null = null;
+
+// Función para manejar el scroll y hacer crecer la ciudad
+const handleScroll = () => {
+  if (!buildingsRef.value || !heroRef.value) return;
+  
+  const scrolled = window.scrollY;
+  const heroHeight = heroRef.value.offsetHeight;
+  
+  // Calcular el progreso del scroll dentro del hero (0 a 1)
+  const progress = Math.min(scrolled / heroHeight, 1);
+  
+  // Escala de 1 (inicial) a 1.5 (150% al hacer scroll completo del hero)
+  const scale = 1 + (progress * 0.5);
+  
+  // Mover hacia arriba ligeramente para que el crecimiento se vea más natural
+  const translateY = progress * -20; // -20px máximo
+  
+  buildingsRef.value.style.transform = `scale(${scale}) translateY(${translateY}px)`;
+  buildingsRef.value.style.transformOrigin = 'bottom center';
+};
 
 // Función para generar posiciones alejadas del centro
 const generateEdgePosition = () => {
@@ -170,6 +191,12 @@ onMounted(() => {
   setTimeout(() => {
     startAnimation();
   }, 2000); // Espera 2 segundos después de que aparezcan los elementos
+  
+  // Agregar listener de scroll para el efecto de crecimiento de ciudad
+  window.addEventListener('scroll', handleScroll, { passive: true });
+  
+  // Ejecutar una vez para aplicar estado inicial
+  handleScroll();
 });
 
 onUnmounted(() => {
@@ -178,6 +205,9 @@ onUnmounted(() => {
     mainTimeline.kill();
   }
   gsap.killTweensOf([...floatingElements.value, titleRef.value, subtitleRef.value]);
+  
+  // Remover listener de scroll
+  window.removeEventListener('scroll', handleScroll);
 });
 </script>
 
@@ -199,6 +229,9 @@ onUnmounted(() => {
   max-height: 500px;
   object-fit: cover;
   object-position: bottom;
+  /* Transición suave para el efecto de scroll */
+  transition: transform 0.1s ease-out;
+  will-change: transform;
 }
 </style>
 

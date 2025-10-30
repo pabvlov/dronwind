@@ -2,19 +2,53 @@
 export interface Props {
 	title: string;
 	description?: string;
+	keywords?: string;
 }
 
-const { title, description = "Proyecto Dronwind con Astro, Vue, Tailwind y GSAP" } = Astro.props;
+const { 
+	title, 
+	description = "Dronwind - Servicio profesional de limpieza con drones en V Región. Cobertura en Viña del Mar, Valparaíso, Concón, Quilpué, Villa Alemana y Limache. Limpieza de fachadas, paneles solares, vidrios y techos industriales sin riesgo.",
+	keywords = "limpieza con drones, mantenimiento en altura drones, limpieza paneles solares dron, limpieza fachadas dron, dron limpieza Chile, limpieza industrial drones, limpieza vidrios dron, dron limpieza Viña del Mar, dron limpieza Valparaíso, dron limpieza Concón, dron limpieza Quilpué, dron limpieza Villa Alemana, dron limpieza Limache, limpieza sin andamios, limpieza curtain wall V región"
+} = Astro.props;
 ---
 
 <!doctype html>
 <html lang="es">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="description" content={description} />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		
+		<!-- SEO Meta Tags -->
 		<title>{title}</title>
+		<meta name="description" content={description} />
+		<meta name="keywords" content={keywords} />
+		
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:locale" content="es_CL" />
+		
+		<!-- Twitter -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		
+		<!-- Geo Tags para SEO Local -->
+		<meta name="geo.region" content="CL-VS" />
+		<meta name="geo.placename" content="Viña del Mar" />
+		<meta name="geo.position" content="-33.0247;-71.5518" />
+		<meta name="ICBM" content="-33.0247, -71.5518" />
+		
+		<!-- Robots -->
+		<meta name="robots" content="index, follow" />
+		<meta name="googlebot" content="index, follow" />
+		
+		<!-- Favicon -->
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		
+		<!-- Canonical URL -->
+		<link rel="canonical" href="https://dronwind.cl" />
 		
 		<!-- Google Fonts - Montserrat -->
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -23,6 +57,66 @@ const { title, description = "Proyecto Dronwind con Astro, Vue, Tailwind y GSAP"
 		
 		<!-- Preload GSAP for better performance -->
 		<link rel="modulepreload" href="/src/utils/gsap.ts" />
+		
+		<!-- Structured Data - JSON-LD -->
+		<script type="application/ld+json">
+		{
+			"@context": "https://schema.org",
+			"@type": "LocalBusiness",
+			"name": "Dronwind",
+			"description": "Servicio profesional de limpieza con drones en Chile",
+			"url": "https://dronwind.cl",
+			"telephone": "+56954080730",
+			"address": {
+				"@type": "PostalAddress",
+				"addressLocality": "Viña del Mar",
+				"addressRegion": "Valparaíso",
+				"addressCountry": "CL"
+			},
+			"geo": {
+				"@type": "GeoCoordinates",
+				"latitude": -33.0247,
+				"longitude": -71.5518
+			},
+			"areaServed": [
+				{
+					"@type": "City",
+					"name": "Viña del Mar",
+					"containedInPlace": {
+						"@type": "State",
+						"name": "Valparaíso"
+					}
+				},
+				{
+					"@type": "City",
+					"name": "Valparaíso"
+				},
+				{
+					"@type": "City",
+					"name": "Concón"
+				},
+				{
+					"@type": "City",
+					"name": "Quilpué"
+				},
+				{
+					"@type": "City",
+					"name": "Villa Alemana"
+				},
+				{
+					"@type": "City",
+					"name": "Limache"
+				}
+			],
+			"serviceType": [
+				"Limpieza con drones",
+				"Mantenimiento en altura",
+				"Limpieza de fachadas",
+				"Limpieza de paneles solares",
+				"Limpieza industrial"
+			]
+		}
+		</script>
 	</head>
 	<body class="min-h-screen bg-gray-50 text-gray-900">
 		<slot />

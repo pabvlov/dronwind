@@ -4,10 +4,12 @@
       <div class="flex items-center justify-between">
         <!-- Logo -->
         <div class="flex items-center space-x-2" ref="logoRef">
-          <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+          <div class="w-8 h-8 rounded-lg flex items-center justify-center transition-colors duration-300"
+               :class="isTransparent ? 'bg-red-600' : 'bg-blue-600'">
             <span class="text-white font-bold text-sm">D</span>
           </div>
-          <span class="font-bold text-xl text-gray-800">Dronwind</span>
+          <span class="font-bold text-xl transition-colors duration-300"
+                :class="isTransparent ? 'text-white' : 'text-gray-800'">Dronwind</span>
         </div>
         
         <!-- Navigation Links -->
@@ -16,8 +18,10 @@
             v-for="link in links" 
             :key="link.name"
             :href="link.href"
-            class="text-gray-600 hover:text-blue-600 transition-colors duration-200 font-medium"
+            class="transition-colors duration-300 font-medium"
+            :class="isTransparent ? 'text-white hover:text-red-300' : 'text-gray-600 hover:text-blue-600'"
             @mouseenter="handleLinkHover"
+            @click.prevent="scrollToSection(link.href)"
           >
             {{ link.name }}
           </a>
@@ -26,13 +30,17 @@
         <!-- Mobile Menu Button -->
         <button 
           @click="toggleMobileMenu"
-          class="md:hidden w-10 h-10 flex items-center justify-center rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors"
+          class="md:hidden w-10 h-10 flex items-center justify-center rounded-lg border transition-colors"
+          :class="isTransparent ? 'border-white/30 hover:bg-white/10' : 'border-gray-200 hover:bg-gray-50'"
           ref="mobileButtonRef"
         >
           <div class="w-5 h-5 relative">
-            <span class="absolute w-full h-0.5 bg-gray-600 transition-all duration-300" :class="mobileMenuOpen ? 'top-2 rotate-45' : 'top-1'"></span>
-            <span class="absolute w-full h-0.5 bg-gray-600 top-2 transition-all duration-300" :class="mobileMenuOpen ? 'opacity-0' : 'opacity-100'"></span>
-            <span class="absolute w-full h-0.5 bg-gray-600 transition-all duration-300" :class="mobileMenuOpen ? 'top-2 -rotate-45' : 'top-3'"></span>
+            <span class="absolute w-full h-0.5 transition-all duration-300"
+                  :class="[isTransparent ? 'bg-white' : 'bg-gray-600', mobileMenuOpen ? 'top-2 rotate-45' : 'top-1']"></span>
+            <span class="absolute w-full h-0.5 top-2 transition-all duration-300"
+                  :class="[isTransparent ? 'bg-white' : 'bg-gray-600', mobileMenuOpen ? 'opacity-0' : 'opacity-100']"></span>
+            <span class="absolute w-full h-0.5 transition-all duration-300"
+                  :class="[isTransparent ? 'bg-white' : 'bg-gray-600', mobileMenuOpen ? 'top-2 -rotate-45' : 'top-3']"></span>
           </div>
         </button>
       </div>
@@ -49,7 +57,7 @@
             :key="link.name"
             :href="link.href"
             class="text-gray-600 hover:text-blue-600 transition-colors duration-200 font-medium py-2"
-            @click="closeMobileMenu"
+            @click.prevent="scrollToSection(link.href); closeMobileMenu()"
           >
             {{ link.name }}
           </a>
@@ -85,10 +93,11 @@ const mobileMenuRef = ref<HTMLElement>();
 
 // Navigation links
 const links = [
-  { name: 'Inicio', href: '#' },
-  { name: 'Características', href: '#features' },
-  { name: 'Documentación', href: '#docs' },
-  { name: 'Contacto', href: '#contact' }
+  { name: 'Inicio', href: '#inicio' },
+  { name: 'Demo', href: '#demo' },
+  { name: 'Beneficios', href: '#beneficios' },
+  { name: 'Servicios', href: '#servicios' },
+  { name: 'Contacto', href: '#contacto' }
 ];
 
 // Computed
@@ -98,9 +107,26 @@ const navClasses = computed(() => ({
   'bg-white shadow-sm': scrollY.value <= 50 && !props.transparent
 }));
 
+const isTransparent = computed(() => scrollY.value <= 50 && props.transparent);
+
 // Methods
 const handleScroll = () => {
   scrollY.value = window.scrollY;
+};
+
+const scrollToSection = (href: string) => {
+  const sectionId = href.replace('#', '');
+  const section = document.getElementById(sectionId);
+  
+  if (section) {
+    const navHeight = navRef.value?.offsetHeight || 0;
+    const sectionTop = section.offsetTop - navHeight;
+    
+    window.scrollTo({
+      top: sectionTop,
+      behavior: 'smooth'
+    });
+  }
 };
 
 const handleLinkHover = (event: MouseEvent) => {
