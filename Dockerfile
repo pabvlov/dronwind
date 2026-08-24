@@ -23,6 +23,9 @@ RUN npm run build
 # ----------------------------------------
 FROM node:18-alpine
 
+# Install curl for healthchecks
+RUN apk add --no-cache curl
+
 WORKDIR /app
 
 # Copy compiled Astro output
