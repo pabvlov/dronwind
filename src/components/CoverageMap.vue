@@ -17,7 +17,6 @@
         width="100%"
         height="100%"
         style="border:0; filter: grayscale(20%) brightness(0.8) contrast(1.1);"
-        allowfullscreen=""
         loading="lazy"
         referrerpolicy="no-referrer-when-downgrade"
       ></iframe>

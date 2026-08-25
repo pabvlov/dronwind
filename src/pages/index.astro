@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import Navigation from '../components/Navigation.vue';
 import HeroSection from '../components/HeroSection.vue';
-import VideoHero from '../components/VideoHero.vue';
+import ScrollVideoSequence from '../components/ScrollVideoSequence.vue';
 import BenefitsSection from '../components/BenefitsSection.vue';
 import DroneFeatures from '../components/DroneFeatures.vue';
 ---
@@ -25,9 +25,25 @@ import DroneFeatures from '../components/DroneFeatures.vue';
 			/>
 		</section>
 		
-		<!-- Video Hero - Demo en Vivo -->
+		<!-- Scroll Video Sequence - Demo Interactivo -->
 		<section id="demo">
-			<VideoHero client:visible />
+			<ScrollVideoSequence 
+				frameCount={436}
+				framePath="/assets/scroll-frames"
+				framePrefix="frame_"
+				frameExtension="webp"
+				scrollHeight={500}
+				client:visible
+			>
+				<div class="text-center">
+					<h2 class="text-4xl md:text-6xl font-bold text-white mb-4 drop-shadow-lg">
+						Experiencia Dronwind
+					</h2>
+					<p class="text-lg md:text-xl text-gray-200 max-w-2xl mx-auto drop-shadow-md">
+						Desplázate para ver nuestro trabajo en acción
+					</p>
+				</div>
+			</ScrollVideoSequence>
 		</section>
 		
 		<!-- Sección de Beneficios y Superficies -->

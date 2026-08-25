@@ -1,5 +1,11 @@
 // Utilidades para GSAP que funcionan tanto en SSR como en el cliente
 import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+// Registrar plugins solo en el navegador
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 // Verificar si estamos en el navegador
 export const isBrowser = typeof window !== 'undefined';
@@ -93,6 +99,6 @@ export const addHoverEffect = (element: string | Element) => {
   };
 };
 
-// Exportar GSAP para uso directo
-export { gsap };
+// Exportar GSAP y ScrollTrigger para uso directo
+export { gsap, ScrollTrigger };
 export default gsap;

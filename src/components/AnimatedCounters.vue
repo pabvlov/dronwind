@@ -27,7 +27,7 @@ const counters = [
   { label: 'Completados', unit: 'proyectos', target: 127 }
 ];
 
-const displayValues = ref([0, 0, 0]);
+const displayValues = ref<(number | string)[]>([0, 0, 0]);
 const counterRefs = ref<(HTMLElement | null)[]>([]);
 
 onMounted(async () => {
