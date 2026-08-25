@@ -121,41 +121,26 @@ Compacto y versátil  |  Potencia industrial
 
 ---
 
-## Capítulo 4 — La Acción
+## Capítulo 4 — La Diferencia
 **Duración visual**: 6-10 segundos
 
 ```
-Resultados
-que se ven.
+La suciedad
+se queda atrás.
 ```
 
-**Counters**:
+**Mensaje desbloqueable** (a los 80% scroll):
 ```
-12,500 m²
-limpiados
-
-850 horas
-ahorradas
-
-127 proyectos
-completados
-
-0
-accidentes
-```
-
-**Testimonio**:
-```
-"Increíble. Nunca pensé que un drone 
-pudiera dejar los vidrios así de limpios."
-
-— Constructora XYZ, Viña del Mar
+La primera limpieza con drone
+de tu edificio empieza
+con un mensaje.
 ```
 
 **Notas**:
-- Counters usan `countUp.js` o GSAP para animación de números
-- El "0 accidentes" es el más impactante — aparece al final con énfasis
-- Testimonio tiene comillas grandes decorativas en rojo (`"` a 120px, opacity 0.1)
+- Como empresa emergente, NO mostramos números de clientes inventados
+- El foco está en la *transición visual* del antes al después
+- La línea de "limpieza" barre la pantalla sincronizada con el scroll
+- El mensaje final apela a ser pionero: "La primera limpieza..."
 
 ---
 

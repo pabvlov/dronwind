@@ -95,27 +95,28 @@ Experiencia **scroll-driven** tipo Apple/Nike. El usuario desplaza la página y 
 
 ---
 
-### Capítulo 4 — La Acción (65% → 85%)
-**Objetivo**: Demostrar. El antes/después más impactante.
+### Capítulo 4 — La Diferencia (65% → 85%)
+**Objetivo**: Mostrar el impacto visual real. Sin stats inventados — la imagen habla sola.
 
-- **Video de fondo**: Split-screen o transición directa de limpieza en progreso
-  - Izquierda: edificio sucio / Derecha: edificio limpio (o wipe horizontal)
+- **Video de fondo**: Secuencia de limpieza en progreso. El drone barriendo una fachada sucia, dejando un rastro limpio.
 - **Texto**:
-  - "Resultados"
-  - "que se ven."
-- **Counters animados** (desbloqueados al 70%, 75%, 80%):
-  - "12,500 m² limpiados"
-  - "850 horas ahorradas"
-  - "127 proyectos completados"
-  - Cada uno con animación de número contando hacia arriba
-- **Testimonio flotante** (a los 78%):
-  - Bubble: "Increíble, nunca pensé que un drone pudiera dejar los vidrios así" — Cliente X
-- **Transición**: Wipe horizontal. El agua "barre" la pantalla hacia la derecha revelando el capítulo final
+  - "La suciedad"
+  - "se queda atrás."
+- **Efecto visual** (a los 70% scroll):
+  - Una línea horizontal "limpia" barre la pantalla de izquierda a derecha
+  - Atrás de la línea: el video se ve más brillante, saturado, limpio
+  - Adelante de la línea: el video sigue sucio/gris
+  - Efecto de "wipe" sincronizado con el scroll
+- **Mensaje flotante** (a los 80%):
+  - "La primera limpieza con drone de tu edificio empieza con un mensaje."
+- **Transición**: El agua del video "barre" la pantalla hacia abajo revelando el capítulo final
 
 **🎥 Videos que necesitas**:
-1. *Drone limpiando fachada — toma lateral mostrando progreso*
-2. *Toma de drone terminando la limpieza y retrocediendo*
-3. *Edificio completamente limpio con luz del sol reflejando*
+1. *Drone limpiando fachada — toma lateral mostrando la zona sucia vs limpia*
+2. *Toma cenital del drone haciendo una pasada completa*
+3. *Close-up del agua impactando la suciedad y desapareciendo*
+
+**💡 Nota**: Como empresa emergente, no mostramos números de clientes. En su lugar, vendemos la *experiencia visual* y la *oportunidad de ser pionero*.
 
 ---
 
@@ -149,7 +150,7 @@ Experiencia **scroll-driven** tipo Apple/Nike. El usuario desplaza la página y 
 ○ El Problema  
 ○ La Solución
 ○ Tecnología
-○ Acción
+○ La Diferencia
 ○ Resultado
 ```
 - Dots clickeables para saltar a capítulo

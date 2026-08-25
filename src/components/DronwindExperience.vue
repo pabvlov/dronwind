@@ -160,15 +160,12 @@ const chapters: Chapter[] = [
     frameEnd: 300
   },
   {
-    navLabel: 'Acción',
-    titleLines: ['Resultados', 'que se ven.'],
+    navLabel: 'La Diferencia',
+    titleLines: ['La suciedad', 'se queda atrás.'],
     subtitle: '',
     overlay: 'center',
     elements: [
-      { icon: '', title: '12,500 m²', subtitle: 'limpiados', triggerAt: 0.4 },
-      { icon: '', title: '850 horas', subtitle: 'ahorradas', triggerAt: 0.5 },
-      { icon: '', title: '127 proyectos', subtitle: 'completados', triggerAt: 0.6 },
-      { icon: '', title: '0', subtitle: 'accidentes', triggerAt: 0.7 }
+      { icon: '', title: 'La primera limpieza', subtitle: 'con drone de tu edificio empieza con un mensaje.', triggerAt: 0.8 }
     ],
     frameStart: 301,
     frameEnd: 380
