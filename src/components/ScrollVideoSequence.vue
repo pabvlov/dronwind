@@ -84,7 +84,7 @@ const preloadImages = (): Promise<HTMLImageElement[]> => {
   return Promise.all(promises);
 };
 
-// Renderizar frame en el canvas
+// Renderizar frame en el canvas — CONTAIN (ver imagen completa, sin recortar)
 const renderFrame = (frameIndex: number) => {
   const canvas = canvasRef.value;
   if (!canvas || !images[frameIndex]) return;
@@ -94,40 +94,70 @@ const renderFrame = (frameIndex: number) => {
   
   const img = images[frameIndex];
   
-  // Limpiar canvas
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  // Usar tamaño CSS (no el backing store multiplicado por DPR)
+  const cssWidth = parseFloat(canvas.style.width) || canvas.clientWidth;
+  const cssHeight = parseFloat(canvas.style.height) || canvas.clientHeight;
   
-  // Calcular dimensiones para cover fit
-  const scale = Math.max(
-    canvas.width / img.naturalWidth,
-    canvas.height / img.naturalHeight
+  // Limpiar canvas (fondo negro)
+  ctx.fillStyle = '#000';
+  ctx.fillRect(0, 0, cssWidth, cssHeight);
+  
+  // Calcular dimensiones para CONTAIN (ver imagen completa)
+  const scale = Math.min(
+    cssWidth / img.naturalWidth,
+    cssHeight / img.naturalHeight
   );
   
-  const x = (canvas.width - img.naturalWidth * scale) / 2;
-  const y = (canvas.height - img.naturalHeight * scale) / 2;
+  const drawWidth = img.naturalWidth * scale;
+  const drawHeight = img.naturalHeight * scale;
+  const x = (cssWidth - drawWidth) / 2;
+  const y = (cssHeight - drawHeight) / 2;
   
-  ctx.drawImage(
-    img,
-    x, y,
-    img.naturalWidth * scale,
-    img.naturalHeight * scale
-  );
+  ctx.drawImage(img, x, y, drawWidth, drawHeight);
 };
 
-// Redimensionar canvas para pantalla retina
+// Redimensionar canvas manteniendo aspect ratio 16:9 del contenedor
 const resizeCanvas = () => {
   const canvas = canvasRef.value;
-  if (!canvas) return;
+  const container = canvas?.parentElement;
+  if (!canvas || !container) return;
   
+  const containerWidth = container.clientWidth;
+  const containerHeight = container.clientHeight;
+  
+  // Aspect ratio del video (16:9)
+  const videoRatio = 16 / 9;
+  const containerRatio = containerWidth / containerHeight;
+  
+  let canvasWidth, canvasHeight;
+  
+  if (containerRatio > videoRatio) {
+    // Contenedor más ancho que 16:9 → limitar por altura
+    canvasHeight = containerHeight;
+    canvasWidth = canvasHeight * videoRatio;
+  } else {
+    // Contenedor más alto que 16:9 → limitar por ancho
+    canvasWidth = containerWidth;
+    canvasHeight = canvasWidth / videoRatio;
+  }
+  
+  // Aplicar tamaño CSS
+  canvas.style.width = canvasWidth + 'px';
+  canvas.style.height = canvasHeight + 'px';
+  
+  // Tamaño interno del canvas (resolución de rendering)
   const dpr = window.devicePixelRatio || 1;
-  const rect = canvas.getBoundingClientRect();
-  
-  canvas.width = rect.width * dpr;
-  canvas.height = rect.height * dpr;
+  canvas.width = canvasWidth * dpr;
+  canvas.height = canvasHeight * dpr;
   
   const ctx = canvas.getContext('2d');
   if (ctx) {
     ctx.scale(dpr, dpr);
+  }
+  
+  // Re-renderizar frame actual si existe
+  if (images.length > 0 && currentFrame >= 0) {
+    renderFrame(currentFrame);
   }
 };
 
@@ -201,9 +231,10 @@ onUnmounted(() => {
 }
 
 .video-canvas {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
 }
 
 .overlay-content {
@@ -252,11 +283,5 @@ onUnmounted(() => {
   font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 2px;
-}
-
-@media (max-width: 768px) {
-  .video-canvas {
-    object-fit: contain;
-  }
 }
 </style>
