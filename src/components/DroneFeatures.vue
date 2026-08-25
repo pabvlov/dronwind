@@ -1,7 +1,7 @@
 <template>
   <section ref="sectionRef" class="relative">
     <div class="grid md:grid-cols-2 gap-12 items-start">
-      <!-- Columna izquierda: Atributos con ScrollTrigger -->
+      <!-- Columna izquierda: Atributos -->
       <div class="space-y-8">
         <div 
           v-for="(feature, index) in features" 
@@ -24,7 +24,6 @@
       <!-- Columna derecha: Componentes interactivos (sticky) -->
       <div class="sticky top-24 space-y-6">
         <BeforeAfterSlider />
-        <AnimatedCounters />
         <CoverageMap />
       </div>
     </div>
@@ -32,9 +31,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, type ComponentPublicInstance } from 'vue';
 import BeforeAfterSlider from './BeforeAfterSlider.vue';
-import AnimatedCounters from './AnimatedCounters.vue';
 import CoverageMap from './CoverageMap.vue';
 
 const features = [
@@ -47,16 +45,12 @@ const features = [
     description: 'Boquillas de precisión con presión ajustable y detergentes ecológicos específicos para cada tipo de superficie. Compatible con paneles solares y materiales delicados.'
   },
   {
-    title: 'Precisión y Sensores',
-    description: 'Cámaras 4K y sensores LIDAR para inspección detallada. Sistema de georreferenciación para trazabilidad completa del trabajo realizado.'
+    title: 'Antenas, sensores y precisión',
+    description: 'Cámara FPV para ir supervisando el trabajo en tiempo real. Sensor frontal para evitar colisión con instalación y antenas GPS y RTK para mayor precisión.'
   },
   {
     title: 'Seguridad Total',
     description: 'Geofencing automático, protocolos de vuelo certificados y operación remota con mitigación de riesgos. Elimina completamente el riesgo de trabajo en altura.'
-  },
-  {
-    title: 'Reportes y Trazabilidad',
-    description: 'Informes técnicos con fotos antes/después geolocalizadas, recomendaciones de mantenimiento y certificación del servicio realizado.'
   },
   {
     title: 'Máxima Eficiencia',
@@ -65,11 +59,10 @@ const features = [
 ];
 
 const sectionRef = ref<HTMLElement>();
-const featureRefs = ref<(HTMLElement | null)[]>([]);
+const featureRefs = ref<(Element | ComponentPublicInstance | null)[]>([]);
 
 onMounted(async () => {
   // Animaciones desactivadas para mejor performance
-  // Las cards aparecen directamente sin animación
 });
 </script>
 
