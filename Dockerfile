@@ -35,7 +35,7 @@ COPY --from=builder /app/dist/ ./dist/
 COPY --from=builder /app/package*.json ./
 
 # Install only production dependencies (needed by Astro SSR)
-RUN npm ci --omit=dev && npm cache clean --force
+RUN npm install --omit=dev && npm cache clean --force
 
 # Astro standalone adapter listens on 4321 by default
 EXPOSE 4321
