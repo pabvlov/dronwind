@@ -14,7 +14,7 @@ import DroneFeatures from '../components/DroneFeatures.vue';
 >
 	<Navigation transparent={true} client:load />
 	
-	<main class="bg-white">
+	<main class="bg-white overflow-x-hidden">
 		<!-- Hero Section -->
 		<section id="inicio">
 			<HeroSection client:load />
@@ -27,7 +27,7 @@ import DroneFeatures from '../components/DroneFeatures.vue';
 		
 		<!-- Seccion Antes / Despues -->
 		<section id="diferencia" class="py-20 md:py-32 bg-white">
-			<div class="container mx-auto px-6">
+			<div class="container mx-auto">
 				<div class="max-w-5xl mx-auto">
 					<div class="text-center mb-12">
 						<h2 class="text-3xl md:text-5xl font-black text-gray-900 mb-4" style="font-family: 'Montserrat', sans-serif;">
@@ -39,7 +39,7 @@ import DroneFeatures from '../components/DroneFeatures.vue';
 					</div>
 					
 					<!-- Foto antes/despues -->
-					<div class="relative rounded-2xl overflow-hidden shadow-2xl">
+					<div class="relative rounded-2xl overflow-hidden shadow-2xl mx-[10px] md:mx-0">
 						<img 
 							src="/assets/images/drone-limpieza.jpeg" 
 							alt="Drone Dronwind limpiando fachada de edificio"
@@ -63,79 +63,72 @@ import DroneFeatures from '../components/DroneFeatures.vue';
 		
 		<!-- Seccion de Caracteristicas -->
 		<section id="servicios" class="py-20 md:py-32 bg-white">
-			<div class="container mx-auto px-6">
-				<div class="text-center mb-16">
-					<h2 class="text-3xl md:text-5xl font-black text-gray-900 mb-4" style="font-family: 'Montserrat', sans-serif;">
-						Nuestros Servicios y Tecnologia
-					</h2>
+			<div class="container mx-auto">
+				<div class="mx-[10px] md:mx-0">
+					<div class="text-center mb-16">
+						<h2 class="text-3xl md:text-5xl font-black text-gray-900 mb-4" style="font-family: 'Montserrat', sans-serif;">
+							Nuestros Servicios y Tecnologia
+						</h2>
+					</div>
+					
+					<DroneFeatures client:visible />
 				</div>
-				
-				<DroneFeatures client:visible />
 			</div>
 		</section>
 		
-		<!-- Seccion Modelos de Drones -->
+		<!-- Seccion Comprar Drones -->
 		<section id="drones" class="py-20 md:py-32 bg-gray-900 text-white">
-			<div class="container mx-auto px-6">
-				<div class="text-center mb-16">
-					<h2 class="text-3xl md:text-5xl font-black mb-4" style="font-family: 'Montserrat', sans-serif;">
-						Nuestra flota
-					</h2>
-					<p class="text-gray-400 text-lg max-w-2xl mx-auto">
-						Dos modelos para cada necesidad. Desde mantenimiento ligero hasta limpieza industrial.
-					</p>
-				</div>
-				
-				<div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-					<!-- JTC10 -->
-					<a href="/drones/jtc10" class="group block bg-gray-800 rounded-2xl p-8 border border-gray-700 hover:border-red-600 transition-all duration-300 hover:scale-[1.02]">
-						<div class="text-center">
-							<div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-red-600 to-red-800 flex items-center justify-center text-white text-2xl font-black shadow-lg">
-								JTC
+			<div class="container mx-auto">
+				<div class="mx-[10px] md:mx-0 max-w-6xl mx-auto">
+					<div class="grid md:grid-cols-2 gap-12 items-center">
+						<!-- Texto -->
+						<div class="text-center md:text-left">
+							<h2 class="text-3xl md:text-5xl font-black mb-6" style="font-family: 'Montserrat', sans-serif;">
+								Interesado en comprar<br>nuestros drones?
+							</h2>
+							<p class="text-gray-400 text-lg mb-10">
+								Tenemos los modelos Joyance JTC10 y JTC30 disponibles. 
+								Equipos profesionales de limpieza con drone listos para operar.
+							</p>
+							
+							<div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+								<a 
+									href="/drones" 
+									class="inline-block bg-red-600 hover:bg-red-700 text-white font-bold text-lg px-10 py-5 rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-xl"
+								>
+									Ver modelos disponibles
+								</a>
+								<a 
+									href="https://wa.me/56954080730"
+									target="_blank"
+									rel="noopener noreferrer"
+									class="inline-block bg-white hover:bg-gray-100 text-gray-900 font-bold text-lg px-10 py-5 rounded-xl transition-all duration-300 hover:scale-105"
+								>
+									Cotizar dron
+								</a>
 							</div>
-							<h3 class="text-3xl font-black mb-2 group-hover:text-red-500 transition-colors">JTC10</h3>
-							<p class="text-gray-400 mb-6">Compacto y versatil</p>
-							<ul class="text-left text-gray-300 space-y-2 mb-8 text-sm">
-								<li class="flex items-center gap-2"><span class="text-red-500">-</span> Peso: 7.4 kg</li>
-								<li class="flex items-center gap-2"><span class="text-red-500">-</span> Presion: 3,200 PSI</li>
-								<li class="flex items-center gap-2"><span class="text-red-500">-</span> Autonomia: 30-50 min</li>
-								<li class="flex items-center gap-2"><span class="text-red-500">-</span> Alcance: 100 m</li>
-							</ul>
-							<span class="inline-block bg-red-600 hover:bg-red-700 text-white font-bold px-6 py-3 rounded-lg transition-colors">
-								Ver modelo ->
-							</span>
 						</div>
-					</a>
-					
-					<!-- JTC30 -->
-					<a href="/drones/jtc30" class="group block bg-gray-800 rounded-2xl p-8 border border-gray-700 hover:border-red-600 transition-all duration-300 hover:scale-[1.02]">
-						<div class="text-center">
-							<div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-red-600 to-red-800 flex items-center justify-center text-white text-2xl font-black shadow-lg">
-								JTC
-							</div>
-							<h3 class="text-3xl font-black mb-2 group-hover:text-red-500 transition-colors">JTC30</h3>
-							<p class="text-gray-400 mb-6">Potencia industrial</p>
-							<ul class="text-left text-gray-300 space-y-2 mb-8 text-sm">
-								<li class="flex items-center gap-2"><span class="text-red-500">-</span> Peso: 24.4 kg</li>
-								<li class="flex items-center gap-2"><span class="text-red-500">-</span> Presion: 4,100 PSI</li>
-								<li class="flex items-center gap-2"><span class="text-red-500">-</span> Autonomia: 20-40 min</li>
-								<li class="flex items-center gap-2"><span class="text-red-500">-</span> Alcance: 160 m</li>
-							</ul>
-							<span class="inline-block bg-red-600 hover:bg-red-700 text-white font-bold px-6 py-3 rounded-lg transition-colors">
-								Ver modelo ->
-							</span>
+						
+						<!-- Imagen del dron -->
+						<div class="flex justify-center">
+							<img 
+								src="/assets/images/dron-compra.webp" 
+								alt="Drone Joyance JTC"
+								class="w-full max-w-md h-auto drop-shadow-2xl rounded-2xl"
+							/>
 						</div>
-					</a>
+					</div>
 				</div>
 			</div>
 		</section>
 		
 		<!-- CTA Final -->
 		<section id="contacto" class="py-20 md:py-32 bg-white">
-			<div class="container mx-auto px-6 text-center">
-				<h2 class="text-4xl md:text-6xl font-black text-gray-900 mb-6" style="font-family: 'Montserrat', sans-serif;">
-					Tu edificio.<br><span class="text-red-600">Mejor.</span>
-				</h2>
+			<div class="container mx-auto">
+				<div class="mx-[10px] md:mx-0 text-center">
+					<h2 class="text-4xl md:text-6xl font-black text-gray-900 mb-6" style="font-family: 'Montserrat', sans-serif;">
+						Tu edificio.<br><span class="text-red-600">Mejor.</span>
+					</h2>
 				<p class="text-gray-500 text-lg mb-10 max-w-xl mx-auto">
 					La primera limpieza con drone de tu edificio empieza con un mensaje.
 				</p>
@@ -147,20 +140,24 @@ import DroneFeatures from '../components/DroneFeatures.vue';
 						rel="noopener noreferrer"
 						class="inline-block bg-red-600 hover:bg-red-700 text-white font-bold text-lg px-10 py-5 rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-xl"
 					>
-						Cotiza tu limpieza
+						Contratar servicios de dron
 					</a>
 					<a 
 						href="/drones"
 						class="inline-block bg-gray-900 hover:bg-gray-800 text-white font-bold text-lg px-10 py-5 rounded-xl transition-all duration-300 hover:scale-105"
 					>
-						Ver modelos
+						Cotizar dron
 					</a>
 				</div>
 				
 				<div class="mt-16 flex flex-wrap justify-center gap-8 text-sm text-gray-400">
 					<div class="flex items-center gap-2">
-						<svg class="w-5 h-5 text-red-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-						Operador certificado DGAC Chile
+						<img 
+							src="/assets/images/logo-dgac.jpg" 
+							alt="DGAC Chile"
+							class="w-8 h-8 rounded object-contain"
+						/>
+						<span>Operador certificado DGAC Chile</span>
 					</div>
 					<div class="flex items-center gap-2">
 						<svg class="w-5 h-5 text-red-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/></svg>
@@ -170,6 +167,7 @@ import DroneFeatures from '../components/DroneFeatures.vue';
 						<svg class="w-5 h-5 text-red-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
 						100% seguro
 					</div>
+				</div>
 				</div>
 			</div>
 		</section>

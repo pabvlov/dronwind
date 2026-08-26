@@ -1,6 +1,6 @@
 <template>
-  <section class="relative py-20 md:py-32 bg-black overflow-hidden" ref="sectionRef">
-    <div class="container mx-auto px-6">
+  <section class="relative py-12 md:py-32 bg-black overflow-hidden" ref="sectionRef">
+    <div class="container mx-auto px-3 md:px-6">
       <!-- Header -->
       <div class="text-center mb-12 md:mb-16">
         <h2 class="text-3xl md:text-5xl font-black text-white mb-4" style="font-family: 'Montserrat', sans-serif;">
@@ -32,14 +32,14 @@
             />
             
             <!-- Video Label Overlay -->
-            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6 md:p-8">
-              <div class="flex items-end justify-between">
-                <div>
-                  <span class="inline-block px-3 py-1 bg-red-600 text-white text-xs font-bold rounded-full mb-2">
+            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-4 md:p-8">
+              <div class="flex items-end justify-between gap-3">
+                <div class="min-w-0">
+                  <span class="inline-block px-2 py-0.5 md:px-3 md:py-1 bg-red-600 text-white text-[10px] md:text-xs font-bold rounded-full mb-1 md:mb-2">
                     {{ video.tag }}
                   </span>
-                  <h3 class="text-xl md:text-2xl font-bold text-white">{{ video.title }}</h3>
-                  <p class="text-gray-300 text-sm mt-1 hidden md:block">{{ video.description }}</p>
+                  <h3 class="text-base md:text-2xl font-bold text-white truncate">{{ video.title }}</h3>
+                  <p class="text-gray-300 text-xs md:text-sm mt-0.5 md:mt-1 hidden md:block">{{ video.description }}</p>
                 </div>
                 
                 <!-- Play/Pause Toggle -->
@@ -92,12 +92,12 @@
         </div>
 
         <!-- Thumbnail Strip -->
-        <div class="mt-6 flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
+        <div class="mt-4 md:mt-6 flex gap-2 md:gap-3 overflow-x-auto pb-2 scrollbar-hide px-1">
           <button
             v-for="(video, index) in videos"
             :key="index"
             @click="goToVideo(index)"
-            class="relative flex-shrink-0 w-24 h-16 md:w-32 md:h-20 rounded-lg overflow-hidden border-2 transition-all duration-300"
+            class="relative flex-shrink-0 w-20 h-14 md:w-32 md:h-20 rounded-lg overflow-hidden border-2 transition-all duration-300"
             :class="index === activeIndex ? 'border-red-600 scale-105' : 'border-transparent opacity-50 hover:opacity-80'"
           >
             <video

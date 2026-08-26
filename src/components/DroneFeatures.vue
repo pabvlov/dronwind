@@ -1,7 +1,12 @@
 <template>
   <section ref="sectionRef">
-    <div class="grid md:grid-cols-2 gap-12 items-start max-w-6xl mx-auto">
-      <!-- Columna izquierda: Atributos -->
+    <div class="grid md:grid-cols-2 gap-12 items-stretch max-w-6xl mx-auto">
+      <!-- Columna izquierda: Mapa de Chile -->
+      <div class="flex items-stretch justify-center">
+        <CoverageMap class="h-full" />
+      </div>
+
+      <!-- Columna derecha: Atributos -->
       <div class="space-y-6">
         <div 
           v-for="(feature, index) in features" 
@@ -19,11 +24,6 @@
           </div>
         </div>
       </div>
-
-      <!-- Columna derecha: Componentes interactivos -->
-      <div class="sticky top-24 space-y-6">
-        <CoverageMap />
-      </div>
     </div>
   </section>
 </template>
@@ -35,7 +35,7 @@ import CoverageMap from './CoverageMap.vue';
 const features = [
   {
     title: 'Autonomia y Alcance',
-    description: 'Vuelos optimizados para cubrir grandes areas. Sistema de baterias intercambiables que permite operacion continua sin interrupciones significativas.'
+    description: 'Permite la operacion practicamente continua.'
   },
   {
     title: 'Sistema de Limpieza',

@@ -19,7 +19,7 @@
             isLogoVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4',
             letter === 'i' ? 'relative' : ''
           ]"
-          :style="{ transitionDelay: `${index * 0.08}s`, fontSize: 'clamp(4rem, 12vw, 10rem)', color: '#fff' }"
+          :style="{ transitionDelay: `${index * 0.08}s`, fontSize: 'clamp(2.5rem, 10vw, 10rem)', color: '#fff' }"
         >
           {{ letter === 'i' ? 'ı' : letter }}
           <span 
@@ -77,13 +77,10 @@
     </div>
     
     <!-- Silueta de edificios en la parte inferior -->
-    <div class="absolute bottom-0 left-0 right-0 w-full pointer-events-none z-10" ref="buildingsRef">
-      <img 
-        src="/assets/images/buildings-silouette.svg"
-        alt="City Skyline"
-        class="w-full h-auto buildings-silhouette"
-      />
-    </div>
+    <div 
+      class="absolute bottom-0 left-0 right-0 w-full pointer-events-none z-10 buildings-bg" 
+      ref="buildingsRef"
+    ></div>
   </div>
 </template>
 
@@ -314,11 +311,14 @@ onUnmounted(() => {
   filter: brightness(0) saturate(100%) invert(100%);
 }
 
-.buildings-silhouette {
+.buildings-bg {
+  background-image: url('/assets/images/buildings-silouette.svg');
+  background-repeat: repeat-x;
+  background-size: auto 100%;
+  background-position: bottom center;
+  height: min(45vh, 500px);
+  min-height: 250px;
   opacity: 0.3;
-  max-height: 500px;
-  object-fit: cover;
-  object-position: bottom;
   transition: transform 0.1s ease-out;
   will-change: transform;
 }

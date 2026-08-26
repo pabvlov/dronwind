@@ -1,8 +1,8 @@
 <template>
   <section class="relative">
-    <div class="container mx-auto px-6">
+    <div class="container mx-auto">
       <!-- Beneficios Clave -->
-      <div class="mb-20">
+      <div class="mb-20 mx-[10px] md:mx-0">
         <div class="text-center mb-12">
           <h2 class="text-3xl md:text-5xl font-black text-gray-900 mb-4" style="font-family: 'Montserrat', sans-serif;">
             Beneficios Clave
@@ -28,7 +28,7 @@
       </div>
 
       <!-- Superficies que Limpiamos -->
-      <div>
+      <div class="mx-[10px] md:mx-0">
         <div class="text-center mb-12">
           <h2 class="text-3xl md:text-5xl font-black text-gray-900 mb-4" style="font-family: 'Montserrat', sans-serif;">
             Superficies que Limpiamos
@@ -104,6 +104,6 @@ const surfaces = [
   { title: 'Paneles Solares', description: 'Mantenimiento para preservar maxima eficiencia energetica' },
   { title: 'Techos Industriales', description: 'Naves industriales y techos domesticos de dificil acceso' },
   { title: 'Silos y Tanques', description: 'Estructuras de almacenamiento industrial' },
-  { title: 'Torres y Antenas', description: 'Infraestructura de alta tension y telecomunicaciones' }
+  { title: 'Infraestructura tipo torre y telecomunicaciones', description: 'Estructuras de comunicación y señalización de difícil acceso' }
 ];
 </script>
