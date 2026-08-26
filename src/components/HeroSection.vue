@@ -26,7 +26,7 @@
             v-if="letter === 'i'"
             class="absolute left-1/2 -translate-x-1/2 rounded-full bg-red-600"
             :class="{ 'animate-pulse': isLogoVisible }"
-            style="bottom: 100%; margin-bottom: -0.02em; width: 0.18em; height: 0.18em;"
+            style="top: 0.10em; width: 0.18em; height: 0.18em;"
           ></span>
         </span>
       </h1>
