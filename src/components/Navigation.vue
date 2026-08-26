@@ -28,7 +28,7 @@
               @mouseleave="closeDropdown(link.name)"
             >
               <button
-                class="relative text-sm font-medium transition-colors duration-200 px-3 py-2 rounded-lg flex items-center gap-1"
+                class="relative text-sm font-medium transition-colors duration-200 px-3 py-2 rounded-lg flex items-center gap-1 bg-transparent border-0 cursor-pointer"
                 :class="[
                   isScrolled 
                     ? (isActive(link) ? 'text-red-600' : 'text-gray-600 hover:text-red-600') 
@@ -58,19 +58,13 @@
               >
                 <div
                   v-show="dropdownOpen === link.name"
-                  class="absolute top-full left-0 mt-1 w-48 rounded-xl shadow-lg ring-1 ring-black/5 overflow-hidden"
-                  :class="isScrolled ? 'bg-white' : 'bg-gray-900/95 backdrop-blur-sm'"
+                  class="absolute top-full left-0 mt-1 w-48 rounded-xl shadow-xl ring-1 ring-black/5 overflow-hidden bg-white"
                 >
                   <a
                     v-for="child in link.children"
                     :key="child.name"
                     :href="child.href"
-                    class="block px-4 py-3 text-sm font-medium transition-colors"
-                    :class="[
-                      isScrolled 
-                        ? 'text-gray-600 hover:text-red-600 hover:bg-red-50' 
-                        : 'text-white/80 hover:text-white hover:bg-white/10'
-                    ]"
+                    class="block px-4 py-3 text-sm font-medium text-gray-700 hover:text-red-600 hover:bg-red-50 transition-colors"
                     @click.prevent="handleLinkClick(child); closeAllDropdowns()"
                   >
                     {{ child.name }}
@@ -175,12 +169,7 @@
                     v-for="child in link.children"
                     :key="child.name"
                     :href="child.href"
-                    class="block font-medium py-2 px-3 rounded-lg transition-colors text-sm"
-                    :class="[
-                      isScrolled 
-                        ? 'text-gray-500 hover:text-red-600 hover:bg-gray-50' 
-                        : 'text-white/60 hover:text-white hover:bg-white/10'
-                    ]"
+                    class="block font-medium py-2 px-3 rounded-lg transition-colors text-sm text-gray-600 hover:text-red-600 hover:bg-red-50"
                     @click.prevent="handleLinkClick(child); closeMobileMenu()"
                   >
                     {{ child.name }}
@@ -233,6 +222,7 @@ const dropdownOpen = ref<string | null>(null);
 const mobileDropdownOpen = ref<string | null>(null);
 const scrollY = ref(0);
 const activeSection = ref('');
+const currentPath = ref('');
 const navRef = ref<HTMLElement>();
 
 const isScrolled = computed(() => scrollY.value > 50);
@@ -265,7 +255,7 @@ const updateActiveSection = () => {
     .filter(id => id !== 'inicio');
   
   // Check if we're on the home page
-  if (typeof window !== 'undefined' && window.location.pathname !== '/') {
+  if (typeof window !== 'undefined' && currentPath.value !== '/') {
     activeSection.value = '';
     return;
   }
@@ -293,7 +283,7 @@ const updateActiveSection = () => {
 const isActive = (link: NavLink) => {
   if (link.children) {
     // Check if any child is active (for drone pages)
-    return link.children.some(child => window.location.pathname === child.href);
+    return link.children.some(child => currentPath.value === child.href);
   }
   const sectionId = link.href.replace('/#', '');
   return activeSection.value === sectionId;
@@ -305,7 +295,7 @@ const handleScroll = () => {
 };
 
 const handleLinkClick = (link: NavLink) => {
-  const isHomePage = window.location.pathname === '/';
+  const isHomePage = currentPath.value === '/';
   
   if (link.href.startsWith('/#')) {
     const sectionId = link.href.replace('/#', '');
@@ -382,6 +372,7 @@ const handleEscape = (event: KeyboardEvent) => {
 };
 
 onMounted(() => {
+  currentPath.value = window.location.pathname;
   window.addEventListener('scroll', handleScroll, { passive: true });
   document.addEventListener('click', handleClickOutside);
   document.addEventListener('keydown', handleEscape);
