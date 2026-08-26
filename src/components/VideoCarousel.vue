@@ -137,13 +137,13 @@ const videos: VideoItem[] = [
   {
     src: '/assets/videos/video2.webm',
     title: 'Precision en Accion',
-    description: 'Sistema de rociado de precision limpiando ventanales y superficies vidriadas.',
+    description: 'Sistema de rociado de precisión limpiando ventanales y superficies vidriadas.',
     tag: 'Vidrios'
   },
   {
     src: '/assets/videos/video3.webm',
-    title: 'Operacion Aerea',
-    description: 'Vista panoramica del drone en operacion de limpieza industrial.',
+    title: 'Operación Aérea',
+    description: 'Vista panorámica del drone en operación de limpieza industrial.',
     tag: 'Industrial'
   }
 ];

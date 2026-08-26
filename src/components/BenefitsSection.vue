@@ -8,7 +8,7 @@
             Beneficios Clave
           </h2>
           <p class="text-gray-500 max-w-2xl mx-auto">
-            Tecnologia que transforma la limpieza industrial y comercial
+            Tecnología que transforma la limpieza industrial y comercial
           </p>
         </div>
         
@@ -69,8 +69,8 @@ import { h } from 'vue';
 
 const benefits = [
   {
-    title: 'Reduccion de Tiempo',
-    description: 'Hasta 70% mas rapido que metodos tradicionales de limpieza',
+    title: 'Reducción de Tiempo',
+    description: 'Hasta 70% más rápido que métodos tradicionales de limpieza',
     icon: () => h('svg', { fill: 'none', stroke: 'currentColor', viewBox: '0 0 24 24' }, [
       h('path', { 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'stroke-width': '2', d: 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z' })
     ])
@@ -84,13 +84,13 @@ const benefits = [
   },
   {
     title: 'Mayor Privacidad',
-    description: 'Sin intrusion en espacios privados, operacion completamente externa',
+    description: 'Sin intrusión en espacios privados, operación completamente externa',
     icon: () => h('svg', { fill: 'none', stroke: 'currentColor', viewBox: '0 0 24 24' }, [
       h('path', { 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'stroke-width': '2', d: 'M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z' })
     ])
   },
   {
-    title: 'Maxima Eficiencia',
+    title: 'Máxima Eficiencia',
     description: 'Uso optimizado de agua e insumos con menor costo operativo',
     icon: () => h('svg', { fill: 'none', stroke: 'currentColor', viewBox: '0 0 24 24' }, [
       h('path', { 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'stroke-width': '2', d: 'M13 7h8m0 0v8m0-8l-8 8-4-4-6 6' })
@@ -101,8 +101,8 @@ const benefits = [
 const surfaces = [
   { title: 'Fachadas', description: 'Edificios residenciales y comerciales de cualquier altura' },
   { title: 'Vidrios y Curtain Walls', description: 'Limpieza de grandes superficies vidriadas sin rastros' },
-  { title: 'Paneles Solares', description: 'Mantenimiento para preservar maxima eficiencia energetica' },
-  { title: 'Techos Industriales', description: 'Naves industriales y techos domesticos de dificil acceso' },
+  { title: 'Paneles Solares', description: 'Mantenimiento para preservar máxima eficiencia energética' },
+  { title: 'Techos Industriales', description: 'Naves industriales y techos domésticos de difícil acceso' },
   { title: 'Silos y Tanques', description: 'Estructuras de almacenamiento industrial' },
   { title: 'Infraestructura tipo torre y telecomunicaciones', description: 'Estructuras de comunicación y señalización de difícil acceso' }
 ];

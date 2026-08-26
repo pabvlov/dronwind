@@ -34,24 +34,24 @@ import CoverageMap from './CoverageMap.vue';
 
 const features = [
   {
-    title: 'Autonomia y Alcance',
-    description: 'Permite la operacion practicamente continua.'
+    title: 'Autonomía y Alcance',
+    description: 'Permite la operación prácticamente continua.'
   },
   {
     title: 'Sistema de Limpieza',
-    description: 'Boquillas de precision con presion ajustable y detergentes ecologicos especificos para cada tipo de superficie. Compatible con paneles solares y materiales delicados.'
+    description: 'Boquillas de precisión con presión ajustable y detergentes ecológicos específicos para cada tipo de superficie. Compatible con paneles solares y materiales delicados.'
   },
   {
-    title: 'Antenas, sensores y precision',
-    description: 'Camara FPV para ir supervisando el trabajo en tiempo real. Sensor frontal para evitar colision con instalacion y antenas GPS y RTK para mayor precision.'
+    title: 'Antenas, sensores y precisión',
+    description: 'Cámara FPV para ir supervisando el trabajo en tiempo real. Sensor frontal para evitar colisión con instalación y antenas GPS y RTK para mayor precisión.'
   },
   {
     title: 'Seguridad Total',
-    description: 'Geofencing automatico, protocolos de vuelo certificados y operacion remota con mitigacion de riesgos. Elimina completamente el riesgo de trabajo en altura.'
+    description: 'Geofencing automático, protocolos de vuelo certificados y operación remota con mitigación de riesgos. Elimina completamente el riesgo de trabajo en altura.'
   },
   {
-    title: 'Maxima Eficiencia',
-    description: 'Hasta 70% mas rapido que metodos tradicionales. Mayor cobertura por hora con reduccion significativa de personal y eliminacion de andamios.'
+    title: 'Máxima Eficiencia',
+    description: 'Hasta 70% más rápido que métodos tradicionales. Mayor cobertura por hora con reducción significativa de personal y eliminación de andamios.'
   }
 ];
 
