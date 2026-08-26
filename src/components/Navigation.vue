@@ -18,16 +18,24 @@
         </a>
         
         <!-- Navigation Links -->
-        <div class="hidden md:flex items-center space-x-8" ref="linksRef">
+        <div class="hidden md:flex items-center space-x-1" ref="linksRef">
           <a 
             v-for="link in links" 
             :key="link.name"
             :href="link.href"
-            class="text-sm font-medium transition-colors duration-200"
-            :class="isScrolled ? 'text-gray-600 hover:text-red-600' : 'text-white/80 hover:text-white'"
+            class="relative text-sm font-medium transition-colors duration-200 px-3 py-2 rounded-lg"
+            :class="[
+              isScrolled 
+                ? (isActive(link) ? 'text-red-600' : 'text-gray-600 hover:text-red-600') 
+                : (isActive(link) ? 'text-white' : 'text-white/70 hover:text-white')
+            ]"
             @click.prevent="handleLinkClick(link)"
           >
             {{ link.name }}
+            <span 
+              v-if="isActive(link)"
+              class="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-red-600 rounded-full"
+            />
           </a>
         </div>
         
@@ -47,6 +55,7 @@
           class="md:hidden w-10 h-10 flex items-center justify-center rounded-lg border transition-colors"
           :class="isScrolled ? 'border-gray-200 hover:bg-gray-50' : 'border-white/30 hover:bg-white/10'"
           ref="mobileButtonRef"
+          aria-label="Toggle menu"
         >
           <div class="w-5 h-5 relative">
             <span class="absolute w-full h-0.5 transition-all duration-300"
@@ -60,32 +69,46 @@
       </div>
       
       <!-- Mobile Menu -->
-      <div 
-        v-if="mobileMenuOpen"
-        class="md:hidden mt-4 py-4 border-t"
-        :class="isScrolled ? 'border-gray-100' : 'border-white/20'"
+      <Transition
+        enter-active-class="transition-all duration-300 ease-out"
+        enter-from-class="opacity-0 -translate-y-2"
+        enter-to-class="opacity-100 translate-y-0"
+        leave-active-class="transition-all duration-200 ease-in"
+        leave-from-class="opacity-100 translate-y-0"
+        leave-to-class="opacity-0 -translate-y-2"
       >
-        <div class="flex flex-col space-y-4">
-          <a 
-            v-for="link in links" 
-            :key="link.name"
-            :href="link.href"
-            class="font-medium py-2 transition-colors"
-            :class="isScrolled ? 'text-gray-600 hover:text-red-600' : 'text-white/80 hover:text-white'"
-            @click.prevent="handleLinkClick(link); closeMobileMenu()"
-          >
-            {{ link.name }}
-          </a>
-          <a 
-            href="https://wa.me/56954080730"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="bg-red-600 text-white text-center font-bold px-5 py-3 rounded-lg mt-2"
-          >
-            Cotizar ahora
-          </a>
+        <div 
+          v-show="mobileMenuOpen"
+          class="md:hidden mt-4 py-4 border-t"
+          :class="isScrolled ? 'border-gray-100' : 'border-white/20'"
+        >
+          <div class="flex flex-col space-y-1">
+            <a 
+              v-for="link in links" 
+              :key="link.name"
+              :href="link.href"
+              class="font-medium py-3 px-3 rounded-lg transition-colors"
+              :class="[
+                isScrolled 
+                  ? (isActive(link) ? 'text-red-600 bg-red-50' : 'text-gray-600 hover:text-red-600 hover:bg-gray-50') 
+                  : (isActive(link) ? 'text-white bg-white/10' : 'text-white/80 hover:text-white hover:bg-white/10')
+              ]"
+              @click.prevent="handleLinkClick(link); closeMobileMenu()"
+            >
+              {{ link.name }}
+            </a>
+            <a 
+              href="https://wa.me/56954080730"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="bg-red-600 text-white text-center font-bold px-5 py-3 rounded-lg mt-3"
+              @click="closeMobileMenu"
+            >
+              Cotizar ahora
+            </a>
+          </div>
         </div>
-      </div>
+      </Transition>
     </div>
   </nav>
 </template>
@@ -95,6 +118,8 @@ import { ref, onMounted, onUnmounted, computed } from 'vue';
 
 const mobileMenuOpen = ref(false);
 const scrollY = ref(0);
+const activeSection = ref('');
+const navRef = ref<HTMLElement>();
 
 const isScrolled = computed(() => scrollY.value > 50);
 
@@ -111,17 +136,66 @@ const links = [
   { name: 'Contacto', href: '/#contacto' }
 ];
 
+// Detect which section is currently in view
+const updateActiveSection = () => {
+  const sectionIds = links.map(l => l.href.replace('/#', '')).filter(id => id !== 'inicio');
+  
+  // Check if we're on the home page
+  if (typeof window !== 'undefined' && window.location.pathname !== '/') {
+    activeSection.value = '';
+    return;
+  }
+  
+  let current = '';
+  for (const id of sectionIds) {
+    const section = document.getElementById(id);
+    if (section) {
+      const rect = section.getBoundingClientRect();
+      const navHeight = navRef.value?.offsetHeight || 64;
+      if (rect.top <= navHeight + 100) {
+        current = id;
+      }
+    }
+  }
+  
+  // If no section is active and we're near the top, mark inicio as active
+  if (!current && scrollY.value < 300) {
+    current = 'inicio';
+  }
+  
+  activeSection.value = current;
+};
+
+const isActive = (link: { name: string; href: string }) => {
+  const sectionId = link.href.replace('/#', '');
+  return activeSection.value === sectionId;
+};
+
 const handleScroll = () => {
   scrollY.value = window.scrollY;
+  updateActiveSection();
 };
 
 const handleLinkClick = (link: { name: string; href: string }) => {
+  const isHomePage = window.location.pathname === '/';
+  
   if (link.href.startsWith('/#')) {
     const sectionId = link.href.replace('/#', '');
-    const section = document.getElementById(sectionId);
     
+    if (!isHomePage) {
+      // On subpage - navigate to home with hash
+      window.location.href = link.href;
+      return;
+    }
+    
+    if (sectionId === 'inicio') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+    
+    const section = document.getElementById(sectionId);
     if (section) {
-      const navHeight = 64;
+      const navHeight = navRef.value?.offsetHeight || 64;
       const sectionTop = section.offsetTop - navHeight;
       window.scrollTo({ top: sectionTop, behavior: 'smooth' });
     }
@@ -138,12 +212,31 @@ const closeMobileMenu = () => {
   mobileMenuOpen.value = false;
 };
 
+// Close mobile menu when clicking outside
+const handleClickOutside = (event: MouseEvent) => {
+  if (mobileMenuOpen.value && navRef.value && !navRef.value.contains(event.target as Node)) {
+    closeMobileMenu();
+  }
+};
+
+// Close mobile menu on escape key
+const handleEscape = (event: KeyboardEvent) => {
+  if (event.key === 'Escape' && mobileMenuOpen.value) {
+    closeMobileMenu();
+  }
+};
+
 onMounted(() => {
   window.addEventListener('scroll', handleScroll, { passive: true });
+  document.addEventListener('click', handleClickOutside);
+  document.addEventListener('keydown', handleEscape);
   handleScroll();
+  updateActiveSection();
 });
 
 onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll);
+  document.removeEventListener('click', handleClickOutside);
+  document.removeEventListener('keydown', handleEscape);
 });
 </script>
