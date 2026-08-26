@@ -1,26 +1,77 @@
 <template>
-  <div class="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-red-700 via-red-900 to-black overflow-hidden" ref="heroRef" style="background: linear-gradient(225deg, #b91c1c 0%, #7f1d1d 10%, #450a0a 30%, #1a0505 60%, #000000 100%);">
+  <div 
+    class="relative min-h-screen flex items-center justify-center overflow-hidden"
+    ref="heroRef"
+    style="background: linear-gradient(225deg, #b91c1c 0%, #7f1d1d 10%, #450a0a 30%, #1a0505 60%, #000000 100%);"
+  >
     <div class="text-center z-30 relative max-w-4xl px-6">
-      <h1 class="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight drop-shadow-lg" ref="titleRef">
-        {{ title }}
+      <!-- Logo DRONWIND con cursor parpadeante -->
+      <h1 
+        class="font-black tracking-tight leading-none mb-6"
+        style="font-family: 'Montserrat', sans-serif;"
+        ref="logoRef"
+      >
+        <span 
+          v-for="(letter, index) in logoLetters" 
+          :key="index"
+          class="inline-block transition-all duration-500"
+          :class="[
+            isLogoVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4',
+            letter === 'i' ? 'relative' : ''
+          ]"
+          :style="{ transitionDelay: `${index * 0.08}s`, fontSize: 'clamp(4rem, 12vw, 10rem)', color: '#fff' }"
+        >
+          {{ letter === 'i' ? 'ı' : letter }}
+          <span 
+            v-if="letter === 'i'"
+            class="absolute left-1/2 -translate-x-1/2 rounded-full bg-red-600"
+            :class="{ 'animate-pulse': isLogoVisible }"
+            style="bottom: 100%; margin-bottom: -0.02em; width: 0.18em; height: 0.18em;"
+          ></span>
+        </span>
       </h1>
-      <p class="text-lg md:text-xl text-gray-200 mb-8 max-w-2xl mx-auto leading-relaxed drop-shadow-md" ref="subtitleRef">
-        {{ subtitle }}
-      </p>
+      
+      <!-- Tagline con stagger -->
+      <div 
+        class="space-y-2 overflow-hidden"
+        ref="taglineRef"
+      >
+        <p 
+          v-for="(line, index) in taglines" 
+          :key="index"
+          class="text-lg md:text-2xl lg:text-3xl font-medium text-gray-200 transition-all duration-700"
+          :class="isTaglineVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'"
+          :style="{ transitionDelay: `${0.8 + index * 0.15}s` }"
+        >
+          {{ line }}
+        </p>
+      </div>
+      
+      <!-- Scroll indicator -->
+      <div 
+        class="mt-16 transition-all duration-1000"
+        :class="isTaglineVisible ? 'opacity-60 translate-y-0' : 'opacity-0 translate-y-4'"
+        style="transition-delay: 1.5s;"
+      >
+        <div class="flex flex-col items-center gap-3">
+          <span class="text-xs uppercase tracking-[0.3em] text-gray-400 font-medium">Descubre</span>
+          <div class="w-px h-12 bg-gradient-to-b from-red-600 to-transparent"></div>
+        </div>
+      </div>
     </div>
     
-    <!-- Elementos animados - Drones -->
-    <div class="absolute inset-0 pointer-events-none z-20">
+    <!-- Zona de drones - limitada a la altura de los edificios -->
+    <div class="absolute bottom-0 left-0 right-0 h-[45vh] max-h-[500px] min-h-[300px] pointer-events-none z-20" ref="droneZoneRef">
       <img 
-        v-for="(position, i) in dronePositions" 
+        v-for="(state, i) in droneStates" 
         :key="i"
-        :ref="el => floatingElements.push(el as HTMLElement)"
+        :ref="el => { if (el) floatingElements[i] = el as HTMLElement }"
         src="/assets/images/drone.svg"
         alt="Drone"
         class="absolute w-12 h-12 opacity-70 drone-icon"
         :style="{ 
-          left: `${position.x}%`, 
-          top: `${position.y}%` 
+          left: `${state.x}%`, 
+          top: `${state.y}%` 
         }"
       />
     </div>
@@ -38,200 +89,237 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue';
-import { gsap, createFadeInTimeline } from '../utils/gsap';
+import { gsap } from '../utils/gsap';
 
-// Props del componente
-interface Props {
-  title: string;
-  subtitle: string;
+interface DroneState {
+  x: number;
+  y: number;
+  cleaning: boolean;
+  timeline: gsap.core.Timeline | null;
 }
 
-const props = defineProps<Props>();
-
-// Referencias DOM
 const heroRef = ref<HTMLElement>();
-const titleRef = ref<HTMLElement>();
-const subtitleRef = ref<HTMLElement>();
 const buildingsRef = ref<HTMLElement>();
+
+const isLogoVisible = ref(false);
+const isTaglineVisible = ref(false);
+
+const logoLetters = ['D', 'r', 'o', 'n', 'w', 'i', 'n', 'd'];
+const taglines = [
+  'Limpieza con drones',
+  'Sin riesgos. Sin andamios. Sin límites.'
+];
+
+const droneStates = ref<DroneState[]>([]);
 const floatingElements = ref<HTMLElement[]>([]);
+let droneTimelines: gsap.core.Timeline[] = [];
 
-// Posiciones iniciales de los drones (lejos del centro)
-const dronePositions = ref<Array<{x: number, y: number}>>([]);
+// Generar posicion aleatoria en los bordes (evita el centro donde esta el texto)
+const generateRandomPosition = (): { x: number; y: number } => {
+  const margin = 8; // % de margen
+  const centerSafeZone = 30; // % del centro a evitar
+  
+  let x: number, y: number;
+  let isInCenter: boolean;
+  
+  do {
+    x = Math.random() * (100 - margin * 2) + margin;
+    y = Math.random() * (100 - margin * 2) + margin;
+    
+    // Verificar que no este en el centro
+    const distFromCenter = Math.sqrt(
+      Math.pow(x - 50, 2) + Math.pow(y - 50, 2)
+    );
+    isInCenter = distFromCenter < centerSafeZone;
+  } while (isInCenter);
+  
+  return { x, y };
+};
 
-// Timeline principal
-let mainTimeline: gsap.core.Timeline | null = null;
+// Animacion de "limpieza" — movimiento erratico en el mismo edificio
+const animateCleaning = (
+  el: HTMLElement, 
+  state: DroneState, 
+  onComplete: () => void
+) => {
+  const tl = gsap.timeline({
+    onComplete,
+  });
+  
+  // 3 a 6 movimientos erraticos (como limpiando)
+  const cleaningMoves = 3 + Math.floor(Math.random() * 4);
+  
+  for (let i = 0; i < cleaningMoves; i++) {
+    // Movimiento erratico pequeno (±15px)
+    const offsetX = (Math.random() - 0.5) * 30;
+    const offsetY = (Math.random() - 0.5) * 30;
+    const rotation = (Math.random() - 0.5) * 20;
+    const duration = 0.3 + Math.random() * 0.4; // Rapido, como camara rapida
+    
+    tl.to(el, {
+      x: `+=${offsetX}`,
+      y: `+=${offsetY}`,
+      rotation,
+      duration,
+      ease: 'none', // Sin easing para que se vea erratico/mecanico
+    });
+  }
+  
+  // Pequena pausa
+  tl.to({}, { duration: 0.1 + Math.random() * 0.2 });
+  
+  return tl;
+};
 
-// Función para manejar el scroll y hacer crecer la ciudad
+// Animacion de vuelo hacia nuevo edificio
+const animateFlight = (
+  el: HTMLElement,
+  fromX: number,
+  fromY: number,
+  toX: number,
+  toY: number,
+  onComplete: () => void
+) => {
+  const dist = Math.sqrt(Math.pow(toX - fromX, 2) + Math.pow(toY - fromY, 2));
+  // Cuanto mas lejos, mas tarda — pero rapido (efecto camara rapida)
+  const duration = 0.8 + (dist / 100) * 1.5;
+  
+  // Calcular angulo para rotar hacia la direccion del vuelo
+  const angle = Math.atan2(toY - fromY, toX - fromX) * (180 / Math.PI) + 90;
+  
+  return gsap.to(el, {
+    left: `${toX}%`,
+    top: `${toY}%`,
+    rotation: angle,
+    duration,
+    ease: 'power2.inOut',
+    onComplete,
+  });
+};
+
+// Ciclo completo de un drone: volar -> limpiar -> repetir
+const startDroneCycle = (index: number) => {
+  const el = floatingElements.value[index];
+  const state = droneStates.value[index];
+  if (!el || !state) return;
+  
+  // Paso 1: Elegir nuevo edificio (posicion)
+  const newPos = generateRandomPosition();
+  const currentX = state.x;
+  const currentY = state.y;
+  
+  // Paso 2: Volar al nuevo edificio
+  state.cleaning = false;
+  
+  animateFlight(el, currentX, currentY, newPos.x, newPos.y, () => {
+    // Actualizar estado
+    state.x = newPos.x;
+    state.y = newPos.y;
+    state.cleaning = true;
+    
+    // Paso 3: Limpiar (movimiento erratico)
+    const cleaningTl = animateCleaning(el, state, () => {
+      // Paso 4: Cuando termina de limpiar, resetear transform y volar a otro edificio
+      gsap.set(el, { x: 0, y: 0, rotation: 0 });
+      startDroneCycle(index);
+    });
+    
+    if (state.timeline) state.timeline.kill();
+    state.timeline = cleaningTl;
+    droneTimelines[index] = cleaningTl;
+  });
+};
+
+// Efecto parallax de edificios
 const handleScroll = () => {
   if (!buildingsRef.value || !heroRef.value) return;
   
   const scrolled = window.scrollY;
   const heroHeight = heroRef.value.offsetHeight;
-  
-  // Calcular el progreso del scroll dentro del hero (0 a 1)
   const progress = Math.min(scrolled / heroHeight, 1);
-  
-  // Escala de 1 (inicial) a 1.5 (150% al hacer scroll completo del hero)
   const scale = 1 + (progress * 0.5);
-  
-  // Mover hacia arriba ligeramente para que el crecimiento se vea más natural
-  const translateY = progress * -20; // -20px máximo
+  const translateY = progress * -20;
   
   buildingsRef.value.style.transform = `scale(${scale}) translateY(${translateY}px)`;
   buildingsRef.value.style.transformOrigin = 'bottom center';
 };
 
-// Función para generar posiciones alejadas del centro
-const generateEdgePosition = () => {
-  const centerX = 50;
-  const centerY = 50;
-  const minDistanceFromCenter = 30; // Porcentaje mínimo de distancia del centro
-  
-  let x, y, distanceFromCenter;
-  
-  do {
-    // Generar posición en todo el rango
-    x = Math.random() * 90 + 5; // 5% a 95%
-    y = Math.random() * 90 + 5; // 5% a 95%
-    
-    // Calcular distancia del centro
-    distanceFromCenter = Math.sqrt(
-      Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2)
-    );
-  } while (distanceFromCenter < minDistanceFromCenter);
-  
-  return { x, y };
-};
-
-// Función para iniciar animación
-const startAnimation = () => {
-  if (!gsap || floatingElements.value.length === 0) return;
-  
-  // Animar elementos flotantes con movimiento más amplio hacia los bordes
-  floatingElements.value.forEach((el, index) => {
-    if (!el) return;
-    
-    // Calcular posición actual del elemento
-    const currentPos = dronePositions.value[index];
-    const centerX = 50;
-    const centerY = 50;
-    
-    // Calcular vector desde el centro hacia el elemento
-    const directionX = currentPos.x - centerX;
-    const directionY = currentPos.y - centerY;
-    
-    // Normalizar y amplificar el movimiento (mucho más lejos)
-    const moveDistanceX = directionX * 8; // Multiplicador mayor para más movimiento
-    const moveDistanceY = directionY * 8;
-    
-    gsap.to(el, {
-      rotation: 360,
-      x: moveDistanceX,
-      y: moveDistanceY,
-      scale: Math.random() * 0.5 + 0.5,
-      duration: 2 + Math.random() * 2,
-      delay: index * 0.1,
-      ease: "power2.inOut",
-      repeat: -1,
-      yoyo: true
-    });
-  });
-  
-  // Animación del título
-  if (titleRef.value) {
-    gsap.to(titleRef.value, {
-      color: '#ef4444',
-      scale: 1.1,
-      duration: 1,
-      ease: "power2.out"
-    });
-  }
-};
-
-// Lifecycle hooks
 onMounted(() => {
-  // Generar posiciones iniciales para los drones (lejos del centro)
+  // Crear 5 drones con posiciones iniciales
   for (let i = 0; i < 5; i++) {
-    dronePositions.value.push(generateEdgePosition());
+    const pos = generateRandomPosition();
+    droneStates.value.push({
+      x: pos.x,
+      y: pos.y,
+      cleaning: false,
+      timeline: null,
+    });
   }
   
-  // Timeline de entrada
-  mainTimeline = gsap.timeline();
-  
-  if (titleRef.value && subtitleRef.value) {
-    mainTimeline
-      .fromTo(titleRef.value, 
-        { opacity: 0, y: -50 },
-        { opacity: 1, y: 0, duration: 1, ease: "power2.out" }
-      )
-      .fromTo(subtitleRef.value,
-        { opacity: 0, x: -30 },
-        { opacity: 1, x: 0, duration: 0.8, ease: "power2.out" },
-        "-=0.5"
-      );
-  }
-  
-  // Animar elementos flotantes inicialmente
-  floatingElements.value.forEach((el, index) => {
-    if (!el) return;
-    
-    gsap.fromTo(el,
-      { opacity: 0, scale: 0 },
-      { 
-        opacity: 0.7, 
-        scale: 1, 
-        duration: 0.5,
-        delay: 1 + index * 0.1,
-        ease: "back.out(1.7)"
+  // Esperar a que los elementos del DOM esten listos
+  requestAnimationFrame(() => {
+    // Colocar drones en posiciones iniciales
+    floatingElements.value.forEach((el, i) => {
+      if (el && droneStates.value[i]) {
+        gsap.set(el, {
+          left: `${droneStates.value[i].x}%`,
+          top: `${droneStates.value[i].y}%`,
+        });
+        
+        // Delay inicial escalonado para que no todos partan juntos
+        setTimeout(() => {
+          startDroneCycle(i);
+        }, i * 800 + Math.random() * 500);
       }
-    );
+    });
   });
   
-  // Iniciar animación automáticamente después de la entrada
-  setTimeout(() => {
-    startAnimation();
-  }, 2000); // Espera 2 segundos después de que aparezcan los elementos
+  // Trigger text animations
+  requestAnimationFrame(() => {
+    isLogoVisible.value = true;
+    setTimeout(() => {
+      isTaglineVisible.value = true;
+    }, 400);
+  });
   
-  // Agregar listener de scroll para el efecto de crecimiento de ciudad
   window.addEventListener('scroll', handleScroll, { passive: true });
-  
-  // Ejecutar una vez para aplicar estado inicial
   handleScroll();
 });
 
 onUnmounted(() => {
-  // Limpiar animaciones
-  if (mainTimeline) {
-    mainTimeline.kill();
-  }
-  gsap.killTweensOf([...floatingElements.value, titleRef.value, subtitleRef.value]);
-  
-  // Remover listener de scroll
   window.removeEventListener('scroll', handleScroll);
+  // Limpiar timelines
+  droneTimelines.forEach(tl => tl?.kill());
+  droneStates.value.forEach(s => s.timeline?.kill());
 });
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&display=swap');
+
+.animate-pulse {
+  animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
 .drone-icon {
-  /* Cambiar color del SVG a blanco */
   filter: brightness(0) saturate(100%) invert(100%);
 }
 
-/* Opcional: Efecto sutil al hover */
-.drone-icon:hover {
-  filter: brightness(0) saturate(100%) invert(90%);
-}
-
 .buildings-silhouette {
-  /* Ahora el SVG tiene fondo transparente */
   opacity: 0.3;
-  /* Altura máxima para que no sea demasiado grande */
   max-height: 500px;
   object-fit: cover;
   object-position: bottom;
-  /* Transición suave para el efecto de scroll */
   transition: transform 0.1s ease-out;
   will-change: transform;
 }
 </style>
-

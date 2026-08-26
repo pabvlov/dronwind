@@ -231,6 +231,3 @@ Ver archivo `COPY-EXPERIENCIA.md` para textos detallados por capitulo.
 - Conversion a WhatsApp desde CTA final: objetivo +20%
 
 ---
-
-*Revisado por: [tu]*  
-*Proximo paso: Confirmar que videos tienes disponibles y cuales necesitamos grabar/filmar.*
