@@ -1,17 +1,11 @@
 <template>
   <div class="flex flex-col items-center justify-between h-full py-2">
     <!-- Mapa SVG de Chile -->
-    <div class="relative flex-1 w-full flex items-center justify-center">
+    <div class="relative flex-1 w-full flex items-center justify-center md:justify-center -ml-14 md:ml-0">
       <img 
         src="/assets/images/chile.svg" 
         alt="Mapa de Chile"
         class="h-[400px] md:h-[600px] w-auto object-contain"
-      />
-      
-      <!-- Marcador de Valparaíso -->
-      <div 
-        class="absolute w-4 h-4 bg-red-600 rounded-full border-2 border-white shadow-lg animate-pulse"
-        style="top: 32%; right: 8%; transform: translate(50%, -50%);"
       />
     </div>
 

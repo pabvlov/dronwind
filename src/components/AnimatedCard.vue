@@ -5,7 +5,7 @@
       <p class="text-gray-300 leading-relaxed">{{ description }}</p>
       <button 
         @click="handleClick"
-        class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded transition-colors duration-200 cursor-pointer focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-black/40"
+        class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded transition-colors duration-200 cursor-pointer focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-black/40 border-0"
         ref="buttonRef"
       >
         {{ buttonText }}

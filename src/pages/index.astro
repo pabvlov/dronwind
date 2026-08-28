@@ -5,12 +5,16 @@ import HeroSection from '../components/HeroSection.vue';
 import VideoCarousel from '../components/VideoCarousel.vue';
 import BenefitsSection from '../components/BenefitsSection.vue';
 import DroneFeatures from '../components/DroneFeatures.vue';
+import WhatsAppButton from '../components/WhatsAppButton.vue';
+import QuoteModal from '../components/QuoteModal.vue';
 ---
 
 <Layout 
 	title="Dronwind - Limpieza con Drones V Región | Viña del Mar, Valparaíso, Concón"
 	description="Servicio profesional de limpieza con drones en V Región: Viña del Mar, Valparaíso, Concón, Quilpué, Villa Alemana y Limache. Limpieza de fachadas, paneles solares, vidrios y techos industriales. Sin andamios, sin riesgos."
 	keywords="limpieza con drones, mantenimiento en altura drones, limpieza paneles solares dron, limpieza fachadas dron, dron limpieza Chile, limpieza Viña del Mar, limpieza Valparaíso, limpieza Concón, limpieza Quilpué, limpieza Villa Alemana, limpieza Limache, limpieza industrial drones, limpieza vidrios dron, limpieza curtain wall, limpieza sin andamios V región"
+	image="/assets/images/drone-limpieza.jpeg"
+	canonical="/"
 >
 	<Navigation transparent={true} client:load />
 	
@@ -25,7 +29,7 @@ import DroneFeatures from '../components/DroneFeatures.vue';
 			<VideoCarousel client:visible />
 		</section>
 		
-		<!-- Seccion Antes / Despues -->
+		<!-- Sección Antes / Después -->
 		<section id="diferencia" class="py-20 md:py-32 bg-white">
 			<div class="container mx-auto">
 				<div class="max-w-5xl mx-auto">
@@ -34,7 +38,7 @@ import DroneFeatures from '../components/DroneFeatures.vue';
 							La diferencia
 						</h2>
 						<p class="text-gray-500 text-lg">
-							La suciedad se queda atras
+							La suciedad se queda atrás
 						</p>
 					</div>
 					
@@ -49,25 +53,25 @@ import DroneFeatures from '../components/DroneFeatures.vue';
 						
 						<!-- Etiqueta -->
 						<div class="absolute top-4 right-4 bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-bold">
-							EN ACCION
+							EN ACCIÓN
 						</div>
 					</div>
 				</div>
 			</div>
 		</section>
 		
-		<!-- Seccion de Beneficios -->
+		<!-- Sección de Beneficios -->
 		<section id="beneficios" class="py-20 md:py-32 bg-gray-50">
 			<BenefitsSection client:visible />
 		</section>
 		
-		<!-- Seccion de Caracteristicas -->
+		<!-- Sección de Características -->
 		<section id="servicios" class="py-20 md:py-32 bg-white">
 			<div class="container mx-auto">
 				<div class="mx-[10px] md:mx-0">
 					<div class="text-center mb-16">
 						<h2 class="text-3xl md:text-5xl font-black text-gray-900 mb-4" style="font-family: 'Montserrat', sans-serif;">
-							Nuestros Servicios y Tecnologia
+							Nuestros Servicios y Tecnología
 						</h2>
 					</div>
 					
@@ -76,15 +80,15 @@ import DroneFeatures from '../components/DroneFeatures.vue';
 			</div>
 		</section>
 		
-		<!-- Seccion Comprar Drones -->
+		<!-- Sección Comprar Drones -->
 		<section id="drones" class="py-20 md:py-32 bg-gray-900 text-white">
-			<div class="container mx-auto">
+			<div class="[width:auto] m-[10px] md:m-4">
 				<div class="mx-[10px] md:mx-0 max-w-6xl mx-auto">
 					<div class="grid md:grid-cols-2 gap-12 items-center">
 						<!-- Texto -->
 						<div class="text-center md:text-left">
 							<h2 class="text-3xl md:text-5xl font-black mb-6" style="font-family: 'Montserrat', sans-serif;">
-								Interesado en comprar<br>nuestros drones?
+								¿Interesado en comprar<br>nuestros drones?
 							</h2>
 							<p class="text-gray-400 text-lg mb-10">
 								Tenemos los modelos Joyance JTC10 y JTC30 disponibles. 
@@ -94,7 +98,7 @@ import DroneFeatures from '../components/DroneFeatures.vue';
 							<div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
 								<a 
 									href="/drones" 
-									class="inline-block bg-red-600 hover:bg-red-700 text-white font-bold text-lg px-10 py-5 rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-xl"
+									class="inline-block bg-red-600 hover:bg-red-700 text-white font-bold text-lg px-10 py-5 rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-xl border-0"
 								>
 									Ver modelos disponibles
 								</a>
@@ -122,52 +126,52 @@ import DroneFeatures from '../components/DroneFeatures.vue';
 			</div>
 		</section>
 		
-		<!-- CTA Final -->
+		<!-- CTA Final / Contacto -->
 		<section id="contacto" class="py-20 md:py-32 bg-white">
 			<div class="container mx-auto">
 				<div class="mx-[10px] md:mx-0 text-center">
 					<h2 class="text-4xl md:text-6xl font-black text-gray-900 mb-6" style="font-family: 'Montserrat', sans-serif;">
 						Tu edificio.<br><span class="text-red-600">Mejor.</span>
 					</h2>
-				<p class="text-gray-500 text-lg mb-10 max-w-xl mx-auto">
-					La primera limpieza con drone de tu edificio empieza con un mensaje.
-				</p>
-				
-				<div class="flex flex-col sm:flex-row gap-4 justify-center">
-					<a 
-						href="https://wa.me/56954080730" 
-						target="_blank"
-						rel="noopener noreferrer"
-						class="inline-block bg-red-600 hover:bg-red-700 text-white font-bold text-lg px-10 py-5 rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-xl"
-					>
-						Contratar servicios de dron
-					</a>
-					<a 
-						href="/drones"
-						class="inline-block bg-gray-900 hover:bg-gray-800 text-white font-bold text-lg px-10 py-5 rounded-xl transition-all duration-300 hover:scale-105"
-					>
-						Cotizar dron
-					</a>
-				</div>
-				
-				<div class="mt-16 flex flex-wrap justify-center gap-8 text-sm text-gray-400">
-					<div class="flex items-center gap-2">
-						<img 
-							src="/assets/images/logo-dgac.jpg" 
-							alt="DGAC Chile"
-							class="w-8 h-8 rounded object-contain"
-						/>
-						<span>Operador certificado DGAC Chile</span>
+					<p class="text-gray-500 text-lg mb-10 max-w-xl mx-auto">
+						La primera limpieza con drone de tu edificio empieza con un mensaje.
+					</p>
+					
+					<div class="flex flex-col sm:flex-row gap-4 justify-center">
+					<QuoteModal model="Servicios de limpieza con drones" client:visible>
+						<button
+							type="button"
+							class="inline-block bg-red-600 hover:bg-red-700 text-white font-bold text-lg px-10 py-5 rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-xl cursor-pointer border-0"
+						>
+							Cotizar limpieza
+						</button>
+					</QuoteModal>
+						<a 
+							href="/drones"
+							class="inline-block bg-gray-900 hover:bg-gray-800 text-white font-bold text-lg px-10 py-5 rounded-xl transition-all duration-300 hover:scale-105"
+						>
+							Cotizar dron
+						</a>
 					</div>
-					<div class="flex items-center gap-2">
-						<svg class="w-5 h-5 text-red-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/></svg>
-						Viña del Mar, Valparaíso, Concón
+					
+					<div class="mt-16 flex flex-wrap justify-center gap-8 text-sm text-gray-400">
+						<div class="flex items-center gap-2">
+							<img 
+								src="/assets/images/logo-dgac.jpg" 
+								alt="DGAC Chile"
+								class="w-8 h-8 rounded object-contain"
+							/>
+							<span>Operador certificado DGAC Chile</span>
+						</div>
+						<div class="flex items-center gap-2">
+							<svg class="w-5 h-5 text-red-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/></svg>
+							Viña del Mar, Valparaíso, Concón
+						</div>
+						<div class="flex items-center gap-2">
+							<svg class="w-5 h-5 text-red-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+							100% seguro
+						</div>
 					</div>
-					<div class="flex items-center gap-2">
-						<svg class="w-5 h-5 text-red-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
-						100% seguro
-					</div>
-				</div>
 				</div>
 			</div>
 		</section>
@@ -179,4 +183,6 @@ import DroneFeatures from '../components/DroneFeatures.vue';
 			</div>
 		</footer>
 	</main>
+
+	<WhatsAppButton client:visible />
 </Layout>

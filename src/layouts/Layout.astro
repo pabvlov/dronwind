@@ -1,77 +1,57 @@
 ---
+import SEO from '../components/SEO.astro';
+
 export interface Props {
 	title: string;
 	description?: string;
 	keywords?: string;
+	image?: string;
+	canonical?: string;
+	noindex?: boolean;
 }
 
-const { 
-	title, 
-	description = "Dronwind - Servicio profesional de limpieza con drones en V Región. Cobertura en Viña del Mar, Valparaíso, Concón, Quilpué, Villa Alemana y Limache. Limpieza de fachadas, paneles solares, vidrios y techos industriales sin riesgo.",
-	keywords = "limpieza con drones, mantenimiento en altura drones, limpieza paneles solares dron, limpieza fachadas dron, dron limpieza Chile, limpieza industrial drones, limpieza vidrios dron, dron limpieza Viña del Mar, dron limpieza Valparaíso, dron limpieza Concón, dron limpieza Quilpué, dron limpieza Villa Alemana, dron limpieza Limache, limpieza sin andamios, limpieza curtain wall V región"
-} = Astro.props;
+const { title, description, keywords, image, canonical, noindex } = Astro.props;
+
+const siteUrl = "https://dronwind.cl";
+const currentPath = Astro.url.pathname;
+const canonicalUrl = canonical ? (canonical.startsWith('http') ? canonical : `${siteUrl}${canonical}`) : `${siteUrl}${currentPath}`;
 ---
 
 <!doctype html>
 <html lang="es">
 	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<SEO
+			title={title}
+			description={description}
+			keywords={keywords}
+			image={image}
+			canonical={canonicalUrl}
+			noindex={noindex}
+		/>
 		
-		<!-- SEO Meta Tags -->
-		<title>{title}</title>
-		<meta name="description" content={description} />
-		<meta name="keywords" content={keywords} />
-		
-		<!-- Open Graph / Facebook -->
-		<meta property="og:type" content="website" />
-		<meta property="og:title" content={title} />
-		<meta property="og:description" content={description} />
-		<meta property="og:locale" content="es_CL" />
-		
-		<!-- Twitter -->
-		<meta name="twitter:card" content="summary_large_image" />
-		<meta name="twitter:title" content={title} />
-		<meta name="twitter:description" content={description} />
-		
-		<!-- Geo Tags para SEO Local -->
-		<meta name="geo.region" content="CL-VS" />
-		<meta name="geo.placename" content="Viña del Mar" />
-		<meta name="geo.position" content="-33.0247;-71.5518" />
-		<meta name="ICBM" content="-33.0247, -71.5518" />
-		
-		<!-- Robots -->
-		<meta name="robots" content="index, follow" />
-		<meta name="googlebot" content="index, follow" />
-		
-		<!-- Favicon -->
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		
-		<!-- Canonical URL -->
-		<link rel="canonical" href="https://dronwind.cl" />
-		
-		<!-- Google Fonts - Montserrat -->
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-		
-		<!-- Preload GSAP for better performance -->
-		<link rel="modulepreload" href="/src/utils/gsap.ts" />
-		
-		<!-- Structured Data - JSON-LD -->
-		<script type="application/ld+json">
-		{
+		<!-- Structured Data - JSON-LD: LocalBusiness -->
+		<script type="application/ld+json" set:html={JSON.stringify({
 			"@context": "https://schema.org",
 			"@type": "LocalBusiness",
+			"@id": "https://dronwind.cl/#business",
 			"name": "Dronwind",
-			"description": "Servicio profesional de limpieza con drones en Chile",
+			"alternateName": "Dronwind Chile",
+			"description": "Servicio profesional de limpieza con drones en V Región de Chile. Especialistas en limpieza de fachadas, paneles solares, vidrios y techos industriales sin andamios y sin riesgos.",
 			"url": "https://dronwind.cl",
-			"telephone": "+56954080730",
+			"logo": "https://dronwind.cl/favicon.svg",
+			"image": "https://dronwind.cl/assets/images/drone-limpieza.jpeg",
+			"telephone": "+56 9 5408 0730",
+			"email": "contacto@dronwind.cl",
+			"priceRange": "$$$",
+			"currenciesAccepted": "CLP",
+			"paymentAccepted": "Efectivo, Transferencia bancaria",
 			"address": {
 				"@type": "PostalAddress",
+				"streetAddress": "",
 				"addressLocality": "Viña del Mar",
 				"addressRegion": "Valparaíso",
-				"addressCountry": "CL"
+				"addressCountry": "CL",
+				"postalCode": ""
 			},
 			"geo": {
 				"@type": "GeoCoordinates",
@@ -79,68 +59,116 @@ const {
 				"longitude": -71.5518
 			},
 			"areaServed": [
-				{
-					"@type": "City",
-					"name": "Viña del Mar",
-					"containedInPlace": {
-						"@type": "State",
-						"name": "Valparaíso"
-					}
-				},
-				{
-					"@type": "City",
-					"name": "Valparaíso"
-				},
-				{
-					"@type": "City",
-					"name": "Concón"
-				},
-				{
-					"@type": "City",
-					"name": "Quilpué"
-				},
-				{
-					"@type": "City",
-					"name": "Villa Alemana"
-				},
-				{
-					"@type": "City",
-					"name": "Limache"
-				}
+				{ "@type": "City", "name": "Viña del Mar", "containedInPlace": { "@type": "State", "name": "Valparaíso" } },
+				{ "@type": "City", "name": "Valparaíso", "containedInPlace": { "@type": "State", "name": "Valparaíso" } },
+				{ "@type": "City", "name": "Concón", "containedInPlace": { "@type": "State", "name": "Valparaíso" } },
+				{ "@type": "City", "name": "Quilpué", "containedInPlace": { "@type": "State", "name": "Valparaíso" } },
+				{ "@type": "City", "name": "Villa Alemana", "containedInPlace": { "@type": "State", "name": "Valparaíso" } },
+				{ "@type": "City", "name": "Limache", "containedInPlace": { "@type": "State", "name": "Valparaíso" } }
 			],
 			"serviceType": [
 				"Limpieza con drones",
 				"Mantenimiento en altura",
 				"Limpieza de fachadas",
 				"Limpieza de paneles solares",
-				"Limpieza industrial"
+				"Limpieza industrial",
+				"Limpieza de vidrios",
+				"Limpieza de techos"
+			],
+			"hasOfferCatalog": {
+				"@type": "OfferCatalog",
+				"name": "Servicios de limpieza con drones",
+				"itemListElement": [
+					{
+						"@type": "Offer",
+						"itemOffered": {
+							"@type": "Service",
+							"name": "Limpieza de fachadas con drones",
+							"description": "Limpieza profesional de fachadas de edificios residenciales y comerciales usando drones de alta presión."
+						}
+					},
+					{
+						"@type": "Offer",
+						"itemOffered": {
+							"@type": "Service",
+							"name": "Limpieza de paneles solares",
+							"description": "Mantenimiento de paneles solares para preservar máxima eficiencia energética."
+						}
+					},
+					{
+						"@type": "Offer",
+						"itemOffered": {
+							"@type": "Service",
+							"name": "Limpieza de vidrios y curtain walls",
+							"description": "Limpieza de grandes superficies vidriadas sin rastros usando tecnología de drones."
+						}
+					}
+				]
+			},
+			"openingHoursSpecification": [
+				{
+					"@type": "OpeningHoursSpecification",
+					"dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+					"opens": "08:00",
+					"closes": "18:00"
+				},
+				{
+					"@type": "OpeningHoursSpecification",
+					"dayOfWeek": ["Saturday"],
+					"opens": "09:00",
+					"closes": "14:00"
+				}
+			],
+			"sameAs": [
+				"https://wa.me/56954080730"
 			]
-		}
-		</script>
+		})} />
+
+		<!-- Structured Data: WebSite (SearchAction para Sitelinks) -->
+		<script type="application/ld+json" set:html={JSON.stringify({
+			"@context": "https://schema.org",
+			"@type": "WebSite",
+			"@id": "https://dronwind.cl/#website",
+			"url": "https://dronwind.cl",
+			"name": "Dronwind",
+			"description": "Servicio profesional de limpieza con drones en V Región de Chile",
+			"publisher": { "@id": "https://dronwind.cl/#business" },
+			"potentialAction": {
+				"@type": "SearchAction",
+				"target": {
+					"@type": "EntryPoint",
+					"urlTemplate": "https://dronwind.cl/?q={search_term_string}"
+				},
+				"query-input": "required name=search_term_string"
+			},
+			"inLanguage": "es-CL"
+		})} />
+
+		<!-- Structured Data: WebPage -->
+		<script type="application/ld+json" set:html={JSON.stringify({
+			"@context": "https://schema.org",
+			"@type": "WebPage",
+			"@id": canonicalUrl + "#webpage",
+			"url": canonicalUrl,
+			"name": title,
+			"description": description,
+			"isPartOf": { "@id": "https://dronwind.cl/#website" },
+			"about": { "@id": "https://dronwind.cl/#business" },
+			"inLanguage": "es-CL"
+		})} />
 	</head>
 	<body class="min-h-screen bg-white text-gray-900 overflow-x-hidden">
 		<slot />
-		
-		<!-- Scripts al final del body para mejor rendimiento -->
-		<script>
-			// Configuración global para GSAP en el cliente
-			if (typeof window !== 'undefined') {
-				// Aquí puedes agregar configuraciones globales de GSAP
-				console.log('GSAP ready for animations');
-			}
-		</script>
 	</body>
 </html>
 
 <style>
-	/* Importar Tailwind CSS */
 	@import '../styles/global.css';
-	
-	/* Estilos globales adicionales */
+
 	html {
 		scroll-behavior: smooth;
 	}
-	
+
 	body {
 		font-family: system-ui, sans-serif;
 	}

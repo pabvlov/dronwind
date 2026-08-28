@@ -26,7 +26,7 @@
             v-if="letter === 'i'"
             class="absolute left-1/2 -translate-x-1/2 rounded-full bg-red-600"
             :class="{ 'animate-pulse': isLogoVisible }"
-            style="top: 0.10em; width: 0.18em; height: 0.18em;"
+            style="top: 0.05em; width: 0.18em; height: 0.18em;"
           ></span>
         </span>
       </h1>
@@ -67,7 +67,7 @@
         :key="i"
         :ref="el => { if (el) floatingElements[i] = el as HTMLElement }"
         src="/assets/images/drone.svg"
-        alt="Drone"
+        alt="Icono de dron de limpieza profesional Dronwind volando en la zona de edificios"
         class="absolute w-12 h-12 opacity-70 drone-icon"
         :style="{ 
           left: `${state.x}%`, 
@@ -111,7 +111,7 @@ const droneStates = ref<DroneState[]>([]);
 const floatingElements = ref<HTMLElement[]>([]);
 let droneTimelines: gsap.core.Timeline[] = [];
 
-// Generar posicion aleatoria en los bordes (evita el centro donde esta el texto)
+// Generar posición aleatoria en los bordes (evita el centro donde está el texto)
 const generateRandomPosition = (): { x: number; y: number } => {
   const margin = 8; // % de margen
   const centerSafeZone = 30; // % del centro a evitar
@@ -123,7 +123,7 @@ const generateRandomPosition = (): { x: number; y: number } => {
     x = Math.random() * (100 - margin * 2) + margin;
     y = Math.random() * (100 - margin * 2) + margin;
     
-    // Verificar que no este en el centro
+    // Verificar que no esté en el centro
     const distFromCenter = Math.sqrt(
       Math.pow(x - 50, 2) + Math.pow(y - 50, 2)
     );
@@ -133,7 +133,7 @@ const generateRandomPosition = (): { x: number; y: number } => {
   return { x, y };
 };
 
-// Animacion de "limpieza" — movimiento erratico en el mismo edificio
+// Animación de "limpieza" — movimiento errático en el mismo edificio
 const animateCleaning = (
   el: HTMLElement, 
   state: DroneState, 
@@ -143,32 +143,32 @@ const animateCleaning = (
     onComplete,
   });
   
-  // 3 a 6 movimientos erraticos (como limpiando)
+  // 3 a 6 movimientos erráticos (como limpiando)
   const cleaningMoves = 3 + Math.floor(Math.random() * 4);
   
   for (let i = 0; i < cleaningMoves; i++) {
-    // Movimiento erratico pequeno (±15px)
+    // Movimiento errático pequeño (±15px)
     const offsetX = (Math.random() - 0.5) * 30;
     const offsetY = (Math.random() - 0.5) * 30;
     const rotation = (Math.random() - 0.5) * 20;
-    const duration = 0.3 + Math.random() * 0.4; // Rapido, como camara rapida
+    const duration = 0.3 + Math.random() * 0.4; // Rápido, como cámara rápida
     
     tl.to(el, {
       x: `+=${offsetX}`,
       y: `+=${offsetY}`,
       rotation,
       duration,
-      ease: 'none', // Sin easing para que se vea erratico/mecanico
+      ease: 'none', // Sin easing para que se vea errático/mecánico
     });
   }
   
-  // Pequena pausa
+  // Pequeña pausa
   tl.to({}, { duration: 0.1 + Math.random() * 0.2 });
   
   return tl;
 };
 
-// Animacion de vuelo hacia nuevo edificio
+// Animación de vuelo hacia nuevo edificio
 const animateFlight = (
   el: HTMLElement,
   fromX: number,
@@ -178,10 +178,10 @@ const animateFlight = (
   onComplete: () => void
 ) => {
   const dist = Math.sqrt(Math.pow(toX - fromX, 2) + Math.pow(toY - fromY, 2));
-  // Cuanto mas lejos, mas tarda — pero rapido (efecto camara rapida)
+  // Cuanto más lejos, más tarda — pero rápido (efecto cámara rápida)
   const duration = 0.8 + (dist / 100) * 1.5;
   
-  // Calcular angulo para rotar hacia la direccion del vuelo
+  // Calcular ángulo para rotar hacia la dirección del vuelo
   const angle = Math.atan2(toY - fromY, toX - fromX) * (180 / Math.PI) + 90;
   
   return gsap.to(el, {
@@ -200,7 +200,7 @@ const startDroneCycle = (index: number) => {
   const state = droneStates.value[index];
   if (!el || !state) return;
   
-  // Paso 1: Elegir nuevo edificio (posicion)
+  // Paso 1: Elegir nuevo edificio (posición)
   const newPos = generateRandomPosition();
   const currentX = state.x;
   const currentY = state.y;
@@ -214,7 +214,7 @@ const startDroneCycle = (index: number) => {
     state.y = newPos.y;
     state.cleaning = true;
     
-    // Paso 3: Limpiar (movimiento erratico)
+    // Paso 3: Limpiar (movimiento errático)
     const cleaningTl = animateCleaning(el, state, () => {
       // Paso 4: Cuando termina de limpiar, resetear transform y volar a otro edificio
       gsap.set(el, { x: 0, y: 0, rotation: 0 });

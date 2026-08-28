@@ -1,16 +1,16 @@
 <template>
   <nav 
-    class="fixed top-0 left-0 right-0 z-50 transition-all duration-300" 
-    :class="navClasses"
+    class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 flex flex-col" 
+    :class="[navClasses, mobileMenuOpen ? 'min-h-screen bg-white' : '']"
     ref="navRef"
   >
-    <div class="container mx-auto px-6 py-4">
+    <div class="px-4 sm:px-6 py-4 [width:auto]" :class="mobileMenuOpen ? 'flex flex-col flex-1' : ''">
       <div class="flex items-center justify-between">
         <!-- Logo -->
-        <a href="/" class="flex items-center space-x-2" ref="logoRef">
+        <a href="/" class="flex items-center space-x-2 no-underline" ref="logoRef">
           <span 
             class="font-black text-xl tracking-tight transition-colors duration-300" 
-            :class="isScrolled ? 'text-gray-900' : 'text-white'"
+            :class="(isScrolled || mobileMenuOpen) ? 'text-gray-900' : 'text-white'"
             style="font-family: 'Montserrat', sans-serif;"
           >
             Dron<span class="text-red-600">w</span>ind
@@ -64,7 +64,7 @@
                     v-for="child in link.children"
                     :key="child.name"
                     :href="child.href"
-                    class="block px-4 py-3 text-sm font-medium text-gray-700 hover:text-red-600 hover:bg-red-50 transition-colors"
+                    class="block px-4 py-3 text-sm font-medium text-gray-700 hover:text-red-600 hover:bg-red-50 transition-colors no-underline"
                     @click.prevent="handleLinkClick(child); closeAllDropdowns()"
                   >
                     {{ child.name }}
@@ -77,7 +77,7 @@
             <a 
               v-else
               :href="link.href"
-              class="relative text-sm font-medium transition-colors duration-200 px-3 py-2 rounded-lg"
+              class="relative text-sm font-medium transition-colors duration-200 px-3 py-2 rounded-lg no-underline"
               :class="[
                 isScrolled 
                   ? (isActive(link) ? 'text-red-600' : 'text-gray-600 hover:text-red-600') 
@@ -95,31 +95,46 @@
         </div>
         
         <!-- CTA Button -->
-        <a 
-          href="https://wa.me/56954080730"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="hidden md:inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white text-sm font-bold px-5 py-2.5 rounded-lg transition-all duration-300 hover:scale-105"
-        >
-          Cotizar
-        </a>
+        <QuoteModal model="Servicios de limpieza con drones" class="hidden md:block">
+          <button
+            type="button"
+            class="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white text-sm font-bold px-5 py-2.5 rounded-lg transition-all duration-300 hover:scale-105 cursor-pointer border-0"
+          >
+            Cotizar
+          </button>
+        </QuoteModal>
         
         <!-- Mobile Menu Button -->
         <button 
           @click="toggleMobileMenu"
-          class="md:hidden w-10 h-10 flex items-center justify-center rounded-lg border transition-colors"
-          :class="isScrolled ? 'border-gray-200 hover:bg-gray-50' : 'border-white/30 hover:bg-white/10'"
+          class="md:hidden relative w-11 h-11 flex items-center justify-center rounded-xl transition-all duration-300"
+          :class="(isScrolled || mobileMenuOpen) ? 'bg-gray-100 hover:bg-gray-200' : 'bg-white/10 hover:bg-white/20 backdrop-blur-sm'"
           ref="mobileButtonRef"
           aria-label="Toggle menu"
         >
-          <div class="w-5 h-5 relative">
-            <span class="absolute w-full h-0.5 transition-all duration-300"
-                  :class="[isScrolled ? 'bg-gray-600' : 'bg-white', mobileMenuOpen ? 'top-2 rotate-45' : 'top-1']"></span>
-            <span class="absolute w-full h-0.5 top-2 transition-all duration-300"
-                  :class="[isScrolled ? 'bg-gray-600' : 'bg-white', mobileMenuOpen ? 'opacity-0' : 'opacity-100']"></span>
-            <span class="absolute w-full h-0.5 transition-all duration-300"
-                  :class="[isScrolled ? 'bg-gray-600' : 'bg-white', mobileMenuOpen ? 'top-2 -rotate-45' : 'top-3']"></span>
-          </div>
+          <svg v-if="mobileMenuOpen" class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+          <svg v-else class="w-6 h-6 text-red-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <!-- Body -->
+            <rect x="9" y="9" width="6" height="6" rx="1.5" />
+            <!-- Camera -->
+            <circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none" />
+            <!-- Front arms -->
+            <path d="M10 10L4 4" />
+            <path d="M14 10L20 4" />
+            <!-- Rear arms -->
+            <path d="M10 14L4 20" />
+            <path d="M14 14L20 20" />
+            <!-- Front-left propeller -->
+            <circle cx="4" cy="4" r="2.5" />
+            <!-- Front-right propeller -->
+            <circle cx="20" cy="4" r="2.5" />
+            <!-- Rear-left propeller -->
+            <circle cx="4" cy="20" r="2.5" />
+            <!-- Rear-right propeller -->
+            <circle cx="20" cy="20" r="2.5" />
+          </svg>
         </button>
       </div>
       
@@ -134,19 +149,17 @@
       >
         <div 
           v-show="mobileMenuOpen"
-          class="md:hidden mt-4 py-4 border-t"
-          :class="isScrolled ? 'border-gray-100' : 'border-white/20'"
+          class="md:hidden mt-4 py-4 border-t border-gray-100 flex-1 overflow-y-auto"
         >
           <div class="flex flex-col space-y-1">
             <template v-for="link in links" :key="link.name">
               <!-- Dropdown parent in mobile -->
               <div v-if="link.children">
                 <button
-                  class="w-full text-left font-medium py-3 px-3 rounded-lg transition-colors flex items-center justify-between"
+                  class="w-full text-left font-medium py-3 px-3 rounded-lg transition-colors flex items-center justify-between bg-transparent border-0"
+                  style="font-family: 'Montserrat', sans-serif;"
                   :class="[
-                    isScrolled 
-                      ? (isActive(link) ? 'text-red-600 bg-red-50' : 'text-gray-600 hover:text-red-600 hover:bg-gray-50') 
-                      : (isActive(link) ? 'text-white bg-white/10' : 'text-white/80 hover:text-white hover:bg-white/10')
+                    isActive(link) ? 'text-red-600 bg-red-50' : 'text-gray-600 hover:text-red-600 hover:bg-gray-50'
                   ]"
                   @click="toggleMobileDropdown(link.name)"
                 >
@@ -169,7 +182,8 @@
                     v-for="child in link.children"
                     :key="child.name"
                     :href="child.href"
-                    class="block font-medium py-2 px-3 rounded-lg transition-colors text-sm text-gray-600 hover:text-red-600 hover:bg-red-50"
+                    class="block font-medium py-2 px-3 rounded-lg transition-colors text-sm text-gray-500 hover:text-red-600 hover:bg-red-50 no-underline"
+                    style="font-family: 'Montserrat', sans-serif;"
                     @click.prevent="handleLinkClick(child); closeMobileMenu()"
                   >
                     {{ child.name }}
@@ -181,26 +195,26 @@
               <a 
                 v-else
                 :href="link.href"
-                class="font-medium py-3 px-3 rounded-lg transition-colors"
+                class="font-medium py-3 px-3 rounded-lg transition-colors no-underline"
+                style="font-family: 'Montserrat', sans-serif;"
                 :class="[
-                  isScrolled 
-                    ? (isActive(link) ? 'text-red-600 bg-red-50' : 'text-gray-600 hover:text-red-600 hover:bg-gray-50') 
-                    : (isActive(link) ? 'text-white bg-white/10' : 'text-white/80 hover:text-white hover:bg-white/10')
+                  isActive(link) ? 'text-red-600 bg-red-50' : 'text-gray-600 hover:text-red-600 hover:bg-gray-50'
                 ]"
                 @click.prevent="handleLinkClick(link); closeMobileMenu()"
               >
                 {{ link.name }}
               </a>
             </template>
-            <a 
-              href="https://wa.me/56954080730"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="bg-red-600 text-white text-center font-bold px-5 py-3 rounded-lg mt-3"
-              @click="closeMobileMenu"
-            >
-              Cotizar ahora
-            </a>
+            <QuoteModal model="Servicios de limpieza con drones">
+              <button
+                type="button"
+                @click="closeMobileMenu"
+                class="w-full bg-red-600 hover:bg-red-700 text-white text-center font-bold px-5 py-3 rounded-lg mt-3 cursor-pointer border-0"
+                style="font-family: 'Montserrat', sans-serif;"
+              >
+                Cotizar ahora
+              </button>
+            </QuoteModal>
           </div>
         </div>
       </Transition>
@@ -210,6 +224,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, computed } from 'vue';
+import QuoteModal from './QuoteModal.vue';
 
 interface NavLink {
   name: string;

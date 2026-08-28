@@ -1,0 +1,105 @@
+---
+export interface Props {
+	title: string;
+	description?: string;
+	keywords?: string;
+	image?: string;
+	canonical?: string;
+	noindex?: boolean;
+	article?: boolean;
+	publishedTime?: string;
+	modifiedTime?: string;
+	author?: string;
+}
+
+const {
+	title,
+	description = "Dronwind - Servicio profesional de limpieza con drones en V Región. Cobertura en Viña del Mar, Valparaíso, Concón, Quilpué, Villa Alemana y Limache. Limpieza de fachadas, paneles solares, vidrios y techos industriales sin riesgo.",
+	keywords = "limpieza con drones, mantenimiento en altura drones, limpieza paneles solares dron, limpieza fachadas dron, dron limpieza Chile, limpieza industrial drones, limpieza vidrios dron, dron limpieza Viña del Mar, dron limpieza Valparaíso, dron limpieza Concón, dron limpieza Quilpué, dron limpieza Villa Alemana, dron limpieza Limache, limpieza sin andamios, limpieza curtain wall V región",
+	image = "/assets/images/drone-limpieza.jpeg",
+	canonical,
+	noindex = false,
+	article = false,
+	publishedTime,
+	modifiedTime,
+	author = "Dronwind"
+} = Astro.props;
+
+// Construir URL canonical
+const siteUrl = "https://dronwind.cl";
+const canonicalUrl = canonical ? (canonical.startsWith('http') ? canonical : `${siteUrl}${canonical}`) : `${siteUrl}${Astro.url.pathname}`;
+const ogImage = image.startsWith('http') ? image : `${siteUrl}${image}`;
+---
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<!-- Título y descripción -->
+<title>{title}</title>
+<meta name="description" content={description} />
+<meta name="keywords" content={keywords} />
+
+<!-- Canonical URL -->
+<link rel="canonical" href={canonicalUrl} />
+
+<!-- Robots -->
+{noindex ? (
+	<meta name="robots" content="noindex, nofollow" />
+	<meta name="googlebot" content="noindex, nofollow" />
+) : (
+	<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+	<meta name="googlebot" content="index, follow" />
+)}
+
+<!-- Autor y copyright -->
+<meta name="author" content={author} />
+<meta name="copyright" content={`© ${new Date().getFullYear()} Dronwind`} />
+
+<!-- Theme color para móviles -->
+<meta name="theme-color" content="#000000" />
+<meta name="msapplication-TileColor" content="#000000" />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content={article ? "article" : "website"} />
+<meta property="og:site_name" content="Dronwind" />
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:locale" content="es_CL" />
+<meta property="og:image" content={ogImage} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content={title} />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@dronwind" />
+<meta name="twitter:creator" content="@dronwind" />
+<meta name="twitter:url" content={canonicalUrl} />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />
+<meta name="twitter:image:alt" content={title} />
+
+<!-- Artículo (si aplica) -->
+{article && publishedTime && <meta property="article:published_time" content={publishedTime} />}
+{article && modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
+{article && <meta property="article:author" content={author} />}
+
+<!-- Geo Tags para SEO Local -->
+<meta name="geo.region" content="CL-VS" />
+<meta name="geo.placename" content="Viña del Mar" />
+<meta name="geo.position" content="-33.0247;-71.5518" />
+<meta name="ICBM" content="-33.0247, -71.5518" />
+
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+<!-- Preconnects para performance -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+<link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+
+<!-- Google Fonts - Montserrat -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />

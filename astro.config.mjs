@@ -7,13 +7,29 @@ import tailwindcss from '@tailwindcss/vite';
 
 import node from '@astrojs/node';
 
+import sitemap from '@astrojs/sitemap';
+
 // https://astro.build/config
 export default defineConfig({
   // Habilitar SSR completamente
   output: 'server',
-  
+
+  site: 'https://dronwind.cl',
+
   integrations: [
-    vue()
+    vue(),
+    sitemap({
+      filter: (page) => !page.includes('/admin') && !page.includes('/api'),
+      changefreq: 'weekly',
+      priority: 0.7,
+      lastmod: new Date(),
+      i18n: {
+        defaultLocale: 'es',
+        locales: {
+          es: 'es-CL'
+        }
+      }
+    })
   ],
 
   vite: {

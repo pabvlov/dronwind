@@ -1,0 +1,16 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://dronwind.cl/sitemap-index.xml
+
+# Reglas opcionales de crawl-delay para bots muy agresivos
+# Crawl-delay: 10
+
+# No indexar archivos de assets que no son páginas
+Disallow: /assets/videos/
+Disallow: /*.json$
+
+# Permitir explícitamente las imágenes para SEO
+Allow: /assets/images/
+Allow: /favicon.svg

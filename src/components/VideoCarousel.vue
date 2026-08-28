@@ -1,13 +1,13 @@
 <template>
   <section class="relative py-12 md:py-32 bg-black overflow-hidden" ref="sectionRef">
-    <div class="container mx-auto px-3 md:px-6">
+    <div class="[width:auto] m-[10px] md:m-4">
       <!-- Header -->
       <div class="text-center mb-12 md:mb-16">
         <h2 class="text-3xl md:text-5xl font-black text-white mb-4" style="font-family: 'Montserrat', sans-serif;">
-          Dronwind en Accion
+          Dron<span class="text-red-600">w</span>ind en Acción
         </h2>
         <p class="text-gray-400 text-lg max-w-2xl mx-auto">
-          Asi trabajamos. Precision, seguridad y resultados visibles en cada superficie.
+          Así trabajamos. Precisión, seguridad y resultados visibles en cada superficie.
         </p>
       </div>
 
@@ -136,7 +136,7 @@ const videos: VideoItem[] = [
   },
   {
     src: '/assets/videos/video2.webm',
-    title: 'Precision en Accion',
+    title: 'Precisión en Acción',
     description: 'Sistema de rociado de precisión limpiando ventanales y superficies vidriadas.',
     tag: 'Vidrios'
   },
