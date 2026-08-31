@@ -26,9 +26,10 @@
               :src="video.src"
               class="w-full h-full object-cover"
               muted
-              loop
+              :loop="video.loop !== false"
               playsinline
               preload="metadata"
+              @ended="nextVideo"
             />
             
             <!-- Video Label Overlay -->
@@ -125,9 +126,17 @@ interface VideoItem {
   title: string;
   description: string;
   tag: string;
+  loop?: boolean;
 }
 
 const videos: VideoItem[] = [
+  {
+    src: '/assets/videos/video-v1-fix-3.webm',
+    title: 'Dronwind en Acción',
+    description: 'Limpieza profesional con drone JTC10 en fachada de edificio.',
+    tag: 'Destacado',
+    loop: false
+  },
   {
     src: '/assets/videos/video1.webm',
     title: 'Limpieza de Fachada',
@@ -166,19 +175,32 @@ const startAutoPlay = () => {
   // Reset progress
   progress.value = 0;
   
-  // Start progress animation
-  const step = 100 / (SLIDE_DURATION / PROGRESS_STEP);
-  progressInterval = setInterval(() => {
-    progress.value += step;
-    if (progress.value >= 100) {
-      progress.value = 0;
-    }
-  }, PROGRESS_STEP);
+  const currentVideo = videos[activeIndex.value];
+  const videoEl = videoElements.value[activeIndex.value];
   
-  // Start auto-advance
-  autoPlayInterval = setInterval(() => {
-    nextVideo();
-  }, SLIDE_DURATION);
+  if (currentVideo.loop !== false) {
+    // Video con loop: usar timer de 8 segundos
+    const step = 100 / (SLIDE_DURATION / PROGRESS_STEP);
+    progressInterval = setInterval(() => {
+      progress.value += step;
+      if (progress.value >= 100) {
+        progress.value = 0;
+      }
+    }, PROGRESS_STEP);
+    
+    // Start auto-advance
+    autoPlayInterval = setInterval(() => {
+      nextVideo();
+    }, SLIDE_DURATION);
+  } else if (videoEl && videoEl.duration) {
+    // Video sin loop: actualizar progreso basado en duración real
+    progressInterval = setInterval(() => {
+      if (videoEl.duration) {
+        progress.value = (videoEl.currentTime / videoEl.duration) * 100;
+      }
+    }, PROGRESS_STEP);
+    // No autoPlayInterval: el video avanza automáticamente al terminar (evento @ended)
+  }
 };
 
 const stopAutoPlay = () => {
@@ -208,6 +230,10 @@ const nextVideo = () => {
   activeIndex.value = (activeIndex.value + 1) % videos.length;
   playCurrentVideo();
   progress.value = 0;
+  
+  // Restart autoplay for new video
+  stopAutoPlay();
+  startAutoPlay();
 };
 
 const prevVideo = () => {
@@ -215,6 +241,10 @@ const prevVideo = () => {
   activeIndex.value = (activeIndex.value - 1 + videos.length) % videos.length;
   playCurrentVideo();
   progress.value = 0;
+  
+  // Restart autoplay for new video
+  stopAutoPlay();
+  startAutoPlay();
 };
 
 const goToVideo = (index: number) => {

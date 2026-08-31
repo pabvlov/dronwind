@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col items-center justify-between h-full py-2">
     <!-- Mapa SVG de Chile -->
-    <div class="relative flex-1 w-full flex items-center justify-center md:justify-center -ml-14 md:ml-0">
+    <div class="relative flex-1 w-full flex items-center justify-center md:justify-center -ml-24 md:ml-0">
       <img 
         src="/assets/images/chile.svg" 
         alt="Mapa de Chile"

@@ -29,6 +29,7 @@
             >
               <button
                 class="relative text-sm font-medium transition-colors duration-200 px-3 py-2 rounded-lg flex items-center gap-1 bg-transparent border-0 cursor-pointer"
+                style="font-family: inherit; font-size: inherit;"
                 :class="[
                   isScrolled 
                     ? (isActive(link) ? 'text-red-600' : 'text-gray-600 hover:text-red-600') 
@@ -111,7 +112,7 @@
           ref="mobileButtonRef"
           aria-label="Toggle menu"
         >
-          <svg v-if="mobileMenuOpen" class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg v-if="mobileMenuOpen" class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
           </svg>
           <svg v-else class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -138,7 +139,7 @@
               <!-- Dropdown parent in mobile -->
               <div v-if="link.children">
                 <button
-                  class="w-full text-left font-medium py-3 px-3 rounded-lg transition-colors flex items-center justify-between bg-transparent border-0"
+                  class="w-full text-left text-base font-medium py-3 px-3 rounded-lg transition-colors flex items-center justify-between bg-transparent border-0"
                   style="font-family: 'Montserrat', sans-serif;"
                   :class="[
                     isActive(link) ? 'text-red-600 bg-red-50' : 'text-gray-600 hover:text-red-600 hover:bg-gray-50'
@@ -164,7 +165,7 @@
                     v-for="child in link.children"
                     :key="child.name"
                     :href="child.href"
-                    class="block font-medium py-2 px-3 rounded-lg transition-colors text-sm text-gray-500 hover:text-red-600 hover:bg-red-50 no-underline"
+                    class="block text-base font-medium py-2 px-3 rounded-lg transition-colors text-gray-500 hover:text-red-600 hover:bg-red-50 no-underline"
                     style="font-family: 'Montserrat', sans-serif;"
                     @click.prevent="handleLinkClick(child); closeMobileMenu()"
                   >
@@ -177,7 +178,7 @@
               <a 
                 v-else
                 :href="link.href"
-                class="font-medium py-3 px-3 rounded-lg transition-colors no-underline"
+                class="text-base font-medium py-3 px-3 rounded-lg transition-colors no-underline"
                 style="font-family: 'Montserrat', sans-serif;"
                 :class="[
                   isActive(link) ? 'text-red-600 bg-red-50' : 'text-gray-600 hover:text-red-600 hover:bg-gray-50'

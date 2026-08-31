@@ -1,6 +1,6 @@
 <template>
   <section ref="sectionRef">
-    <div class="grid md:grid-cols-2 gap-12 items-stretch max-w-6xl mx-auto">
+    <div class="grid md:grid-cols-2 gap-12 items-start max-w-6xl mx-auto">
       <!-- Columna izquierda: Mapa de Chile -->
       <div class="flex items-stretch justify-center">
         <CoverageMap class="h-full" />
@@ -11,16 +11,14 @@
         <div 
           v-for="(feature, index) in features" 
           :key="index"
-          class="bg-white rounded-2xl p-6 border border-gray-100 hover:border-red-200 hover:shadow-lg transition-all duration-300"
+          class="flex items-start gap-4"
         >
-          <div class="flex items-start gap-4">
-            <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-red-50 flex items-center justify-center text-red-600 font-black text-lg">
-              {{ index + 1 }}
-            </div>
-            <div>
-              <h3 class="text-xl font-bold text-gray-900 mb-2">{{ feature.title }}</h3>
-              <p class="text-gray-500 leading-relaxed">{{ feature.description }}</p>
-            </div>
+          <span class="flex-shrink-0 w-6 text-red-600 font-bold text-sm mt-0.5">
+            {{ String(index + 1).padStart(2, '0') }}
+          </span>
+          <div>
+            <h3 class="text-base font-medium text-gray-900 mb-1">{{ feature.title }}</h3>
+            <p class="text-sm text-gray-500 leading-relaxed">{{ feature.description }}</p>
           </div>
         </div>
       </div>

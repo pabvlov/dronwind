@@ -1,61 +1,55 @@
 <template>
   <section class="relative">
-    <div class="container mx-auto">
+    <div class="[width:auto] m-[10%] md:m-4">
       <!-- Beneficios Clave -->
-      <div class="mb-20 mx-[10px] md:mx-0">
-        <div class="text-center mb-12">
-          <h2 class="text-3xl md:text-5xl font-black text-gray-900 mb-4" style="font-family: 'Montserrat', sans-serif;">
-            Beneficios Clave
+      <div class="mb-20">
+        <div class="mb-10 text-center">
+          <h2 class="text-2xl md:text-3xl font-semibold text-gray-900 mb-2" style="font-family: 'Montserrat', sans-serif;">
+            Beneficios Cla<span class="text-red-600">v</span>e
           </h2>
-          <p class="text-gray-500 max-w-2xl mx-auto">
+          <p class="text-gray-400 text-sm">
             Tecnología que transforma la limpieza industrial y comercial
           </p>
         </div>
         
-        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-8 max-w-5xl mx-auto">
           <div 
             v-for="(benefit, index) in benefits" 
             :key="index"
-            class="bg-white rounded-2xl p-6 border border-gray-100 hover:border-red-200 hover:shadow-lg transition-all duration-300 group"
+            class="flex flex-col gap-3"
           >
-            <div class="w-12 h-12 rounded-xl bg-red-50 flex items-center justify-center mb-4 group-hover:bg-red-600 transition-colors duration-300">
-              <component :is="benefit.icon" class="w-6 h-6 text-red-600 group-hover:text-white transition-colors" />
+            <component :is="benefit.icon" class="w-6 h-6 text-red-600" />
+            <div>
+              <h3 class="text-base font-medium text-gray-900 mb-1">{{ benefit.title }}</h3>
+              <p class="text-sm text-gray-500 leading-relaxed">{{ benefit.description }}</p>
             </div>
-            <h3 class="text-lg font-bold text-gray-900 mb-2">{{ benefit.title }}</h3>
-            <p class="text-sm text-gray-500">{{ benefit.description }}</p>
           </div>
         </div>
       </div>
 
       <!-- Superficies que Limpiamos -->
-      <div class="mx-[10px] md:mx-0">
-        <div class="text-center mb-12">
-          <h2 class="text-3xl md:text-5xl font-black text-gray-900 mb-4" style="font-family: 'Montserrat', sans-serif;">
-            Superficies que Limpiamos
+      <div>
+        <div class="mb-10 text-center">
+          <h2 class="text-2xl md:text-3xl font-semibold text-gray-900 mb-2" style="font-family: 'Montserrat', sans-serif;">
+            Superficies que Limpia<span class="text-red-600">m</span>os
           </h2>
-          <p class="text-gray-500 max-w-2xl mx-auto">
+          <p class="text-gray-400 text-sm">
             Soluciones especializadas para cada tipo de superficie
           </p>
         </div>
         
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-5xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-8 max-w-4xl mx-auto">
           <div 
             v-for="(surface, index) in surfaces" 
             :key="index"
-            class="group bg-white rounded-xl p-5 border border-gray-100 hover:border-red-200 hover:shadow-md transition-all duration-300"
+            class="flex flex-col gap-3"
           >
-            <div class="flex items-start gap-4">
-              <div class="w-10 h-10 rounded-lg bg-red-50 flex items-center justify-center flex-shrink-0 group-hover:bg-red-600 transition-colors">
-                <svg class="w-5 h-5 text-red-600 group-hover:text-white transition-colors" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-                </svg>
-              </div>
-              <div>
-                <h3 class="text-base font-bold text-gray-900 group-hover:text-red-600 transition-colors">
-                  {{ surface.title }}
-                </h3>
-                <p class="text-sm text-gray-500">{{ surface.description }}</p>
-              </div>
+            <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            </svg>
+            <div>
+              <h3 class="text-base font-medium text-gray-900 mb-1">{{ surface.title }}</h3>
+              <p class="text-sm text-gray-500 leading-relaxed">{{ surface.description }}</p>
             </div>
           </div>
         </div>
