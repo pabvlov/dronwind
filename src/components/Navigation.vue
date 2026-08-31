@@ -106,7 +106,7 @@
         
         <!-- Mobile Menu Button -->
         <button 
-          @click="toggleMobileMenu"
+          @click.stop="toggleMobileMenu"
           class="md:hidden relative w-11 h-11 flex items-center justify-center rounded-xl transition-all duration-300"
           :class="(isScrolled || mobileMenuOpen) ? 'bg-gray-100 hover:bg-gray-200' : 'bg-white/10 hover:bg-white/20 backdrop-blur-sm'"
           ref="mobileButtonRef"
@@ -115,25 +115,8 @@
           <svg v-if="mobileMenuOpen" class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
           </svg>
-          <svg v-else class="w-6 h-6 text-red-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <!-- Body -->
-            <rect x="9" y="9" width="6" height="6" rx="1.5" />
-            <!-- Camera -->
-            <circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none" />
-            <!-- Front arms -->
-            <path d="M10 10L4 4" />
-            <path d="M14 10L20 4" />
-            <!-- Rear arms -->
-            <path d="M10 14L4 20" />
-            <path d="M14 14L20 20" />
-            <!-- Front-left propeller -->
-            <circle cx="4" cy="4" r="2.5" />
-            <!-- Front-right propeller -->
-            <circle cx="20" cy="4" r="2.5" />
-            <!-- Rear-left propeller -->
-            <circle cx="4" cy="20" r="2.5" />
-            <!-- Rear-right propeller -->
-            <circle cx="20" cy="20" r="2.5" />
+          <svg v-else class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
           </svg>
         </button>
       </div>
