@@ -107,15 +107,14 @@
         <!-- Mobile Menu Button -->
         <button 
           @click.stop="toggleMobileMenu"
-          class="md:hidden relative w-11 h-11 flex items-center justify-center rounded-xl transition-all duration-300"
-          :class="(isScrolled || mobileMenuOpen) ? 'bg-gray-100 hover:bg-gray-200' : 'bg-white/10 hover:bg-white/20 backdrop-blur-sm'"
+          class="md:hidden relative w-11 h-11 flex items-center justify-center border-0 bg-transparent"
           ref="mobileButtonRef"
           aria-label="Toggle menu"
         >
-          <svg v-if="mobileMenuOpen" class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg v-if="mobileMenuOpen" class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
           </svg>
-          <svg v-else class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg v-else class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
           </svg>
         </button>
