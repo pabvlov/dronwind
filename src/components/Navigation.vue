@@ -29,7 +29,7 @@
             >
               <button
                 class="relative text-sm font-medium transition-colors duration-200 px-3 py-2 rounded-lg flex items-center gap-1 bg-transparent border-0 cursor-pointer"
-                style="font-family: inherit; font-size: inherit;"
+                style="font-family: inherit;"
                 :class="[
                   isScrolled 
                     ? (isActive(link) ? 'text-red-600' : 'text-gray-600 hover:text-red-600') 
