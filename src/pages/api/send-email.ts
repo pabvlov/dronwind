@@ -1,28 +1,5 @@
 import type { APIRoute } from 'astro';
-import dotenv from 'dotenv';
-import { fileURLToPath } from 'url';
-import { dirname, resolve } from 'path';
 import nodemailer from 'nodemailer';
-
-// Load .env from project root — the server may start from a different cwd
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const envPaths = [
-  resolve(__dirname, '../../../../.env'),   // dist/server/pages/api/ → project root
-  resolve(process.cwd(), '.env'),           // fallback to cwd
-];
-
-let loaded = false;
-for (const path of envPaths) {
-  const result = dotenv.config({ path });
-  if (!result.error && result.parsed && Object.keys(result.parsed).length > 0) {
-    console.log('[send-email] Loaded .env from:', path);
-    loaded = true;
-    break;
-  }
-}
-if (!loaded) {
-  console.error('[send-email] Could not load .env from any path:', envPaths);
-}
 
 export const POST: APIRoute = async ({ request }) => {
   try {
@@ -46,17 +23,17 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
 
-    const smtpHost = process.env.SMTP_HOST;
+    const smtpHost = process.env.SMTP_HOST?.trim();
     const smtpPort = Number(process.env.SMTP_PORT) || 587;
-    const smtpUser = process.env.SMTP_USER;
-    const smtpPass = process.env.SMTP_PASS;
+    const smtpUser = process.env.SMTP_USER?.trim();
+    const smtpPass = process.env.SMTP_PASS?.trim();
 
-    console.log('[send-email] SMTP_HOST exists:', !!smtpHost);
-    console.log('[send-email] SMTP_USER exists:', !!smtpUser);
-    console.log('[send-email] SMTP_PASS exists:', !!smtpPass);
+    console.log('[send-email] SMTP_HOST:', smtpHost ? 'SET' : 'EMPTY');
+    console.log('[send-email] SMTP_USER:', smtpUser ? 'SET' : 'EMPTY');
+    console.log('[send-email] SMTP_PASS:', smtpPass ? 'SET (' + smtpPass.length + ' chars)' : 'EMPTY');
 
     if (!smtpHost || !smtpUser || !smtpPass) {
-      console.error('Faltan variables de entorno SMTP');
+      console.error('[send-email] Missing or empty SMTP env vars');
       return new Response(
         JSON.stringify({ success: false, message: 'Servidor de correo no configurado. Contacta al administrador.' }),
         { status: 500, headers: { 'Content-Type': 'application/json' } }
@@ -73,8 +50,8 @@ export const POST: APIRoute = async ({ request }) => {
       },
     });
 
-    const toEmail = process.env.CONTACT_EMAIL || 'contacto@dronwind.cl';
-    const fromEmail = process.env.SMTP_FROM || smtpUser;
+    const toEmail = process.env.CONTACT_EMAIL?.trim() || 'contacto@dronwind.cl';
+    const fromEmail = process.env.SMTP_FROM?.trim() || smtpUser;
 
     const mailOptions = {
       from: `"Formulario Dronwind" <${fromEmail}>`,
