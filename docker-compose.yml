@@ -1,0 +1,29 @@
+# ========================================
+# Dronwind — Docker Compose (Production)
+# ========================================
+# Place this file on your server alongside your .env file
+# Then run: docker compose up -d
+
+services:
+  dronwind:
+    image: pabvlov/dronwind:latest
+    container_name: dronwind
+    restart: unless-stopped
+    ports:
+      - "4321:4321"
+    env_file:
+      - .env
+    # OR pass variables directly:
+    # environment:
+    #   - SMTP_HOST=${SMTP_HOST}
+    #   - SMTP_PORT=${SMTP_PORT}
+    #   - SMTP_USER=${SMTP_USER}
+    #   - SMTP_PASS=${SMTP_PASS}
+    #   - SMTP_FROM=${SMTP_FROM}
+    #   - CONTACT_EMAIL=${CONTACT_EMAIL}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4321/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
