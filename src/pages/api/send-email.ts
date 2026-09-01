@@ -23,10 +23,10 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
 
-    const smtpHost = import.meta.env.SMTP_HOST;
-    const smtpPort = Number(import.meta.env.SMTP_PORT) || 587;
-    const smtpUser = import.meta.env.SMTP_USER;
-    const smtpPass = import.meta.env.SMTP_PASS;
+    const smtpHost = process.env.SMTP_HOST;
+    const smtpPort = Number(process.env.SMTP_PORT) || 587;
+    const smtpUser = process.env.SMTP_USER;
+    const smtpPass = process.env.SMTP_PASS;
 
     if (!smtpHost || !smtpUser || !smtpPass) {
       console.error('Faltan variables de entorno SMTP');
@@ -46,8 +46,8 @@ export const POST: APIRoute = async ({ request }) => {
       },
     });
 
-    const toEmail = import.meta.env.CONTACT_EMAIL || 'contacto@dronwind.cl';
-    const fromEmail = import.meta.env.SMTP_FROM || smtpUser;
+    const toEmail = process.env.CONTACT_EMAIL || 'contacto@dronwind.cl';
+    const fromEmail = process.env.SMTP_FROM || smtpUser;
 
     const mailOptions = {
       from: `"Formulario Dronwind" <${fromEmail}>`,
