@@ -1,6 +1,28 @@
 import type { APIRoute } from 'astro';
-import 'dotenv/config';
+import dotenv from 'dotenv';
+import { fileURLToPath } from 'url';
+import { dirname, resolve } from 'path';
 import nodemailer from 'nodemailer';
+
+// Load .env from project root — the server may start from a different cwd
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const envPaths = [
+  resolve(__dirname, '../../../../.env'),   // dist/server/pages/api/ → project root
+  resolve(process.cwd(), '.env'),           // fallback to cwd
+];
+
+let loaded = false;
+for (const path of envPaths) {
+  const result = dotenv.config({ path });
+  if (!result.error && result.parsed && Object.keys(result.parsed).length > 0) {
+    console.log('[send-email] Loaded .env from:', path);
+    loaded = true;
+    break;
+  }
+}
+if (!loaded) {
+  console.error('[send-email] Could not load .env from any path:', envPaths);
+}
 
 export const POST: APIRoute = async ({ request }) => {
   try {
@@ -28,6 +50,10 @@ export const POST: APIRoute = async ({ request }) => {
     const smtpPort = Number(process.env.SMTP_PORT) || 587;
     const smtpUser = process.env.SMTP_USER;
     const smtpPass = process.env.SMTP_PASS;
+
+    console.log('[send-email] SMTP_HOST exists:', !!smtpHost);
+    console.log('[send-email] SMTP_USER exists:', !!smtpUser);
+    console.log('[send-email] SMTP_PASS exists:', !!smtpPass);
 
     if (!smtpHost || !smtpUser || !smtpPass) {
       console.error('Faltan variables de entorno SMTP');
