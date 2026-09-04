@@ -40,18 +40,18 @@ import QuoteForm from '../../components/QuoteForm.vue';
 
 	<main class="overflow-x-hidden">
 		<!-- Hero Banner -->
-		<section class="relative bg-black overflow-hidden">
-			<!-- Drone Image Banner -->
-			<div class="relative w-full h-[50vh] md:h-[60vh]">
-				<img 
-					src="/assets/images/jtc10-banner.webp" 
-					alt="Joyance JTC10 - Drone de limpieza a alta presión"
-					class="w-full h-full object-contain bg-black"
-				/>
-			</div>
-			<!-- Text overlay bar -->
-			<div class="bg-black border-t border-gray-800">
-				<div class="[width:auto] m-[10%] md:m-4 py-8 md:py-12">
+		<section class="relative w-full h-[70vh] md:h-[80vh] bg-black overflow-hidden">
+			<!-- Drone Image as background -->
+			<img 
+				src="/assets/images/jtc10-banner.webp" 
+				alt="Joyance JTC10 - Drone de limpieza a alta presión"
+				class="absolute inset-0 w-full h-full object-cover"
+			/>
+			<!-- Dark gradient overlay for text legibility -->
+			<div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
+			<!-- Text content -->
+			<div class="absolute bottom-0 left-0 right-0">
+				<div class="[width:auto] m-[10%] md:m-4 pb-12 md:pb-16">
 					<div class="max-w-4xl mx-auto">
 						<!-- Breadcrumb -->
 						<div class="mb-4">
@@ -65,7 +65,7 @@ import QuoteForm from '../../components/QuoteForm.vue';
 						>
 							Joyance JTC1<span class="text-red-600">0</span>
 						</h1>
-						<p class="text-xl text-gray-400 max-w-2xl">
+						<p class="text-xl md:text-2xl text-gray-300 max-w-2xl">
 							Dron de limpieza a alta presión — compacto, versátil y eficiente.
 						</p>
 					</div>
