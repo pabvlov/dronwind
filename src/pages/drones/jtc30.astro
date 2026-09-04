@@ -39,28 +39,36 @@ import QuoteForm from '../../components/QuoteForm.vue';
 	})} />
 
 	<main class="overflow-x-hidden">
-		<!-- Hero -->
-		<section 
-			class="relative pt-32 pb-16 md:pt-40 md:pb-24 overflow-hidden"
-			style="background: linear-gradient(225deg, #b91c1c 0%, #7f1d1d 10%, #450a0a 30%, #1a0505 60%, #000000 100%);"
-		>
-			<div class="[width:auto] m-[10%] md:m-4 relative z-10">
-				<div class="max-w-4xl mx-auto">
-					<!-- Breadcrumb -->
-					<div class="mb-6">
-						<a href="/drones" class="text-red-400 hover:text-red-300 transition-colors text-sm font-medium no-underline">
-							← Volver a Drones
-						</a>
+		<!-- Hero Banner -->
+		<section class="relative bg-black overflow-hidden">
+			<!-- Drone Image Banner -->
+			<div class="relative w-full h-[50vh] md:h-[60vh]">
+				<img 
+					src="/assets/images/jtc30-banner.webp" 
+					alt="Joyance JTC30 - Drone de limpieza industrial"
+					class="w-full h-full object-contain bg-black"
+				/>
+			</div>
+			<!-- Text overlay bar -->
+			<div class="bg-black border-t border-gray-800">
+				<div class="[width:auto] m-[10%] md:m-4 py-8 md:py-12">
+					<div class="max-w-4xl mx-auto">
+						<!-- Breadcrumb -->
+						<div class="mb-4">
+							<a href="/drones" class="text-red-500 hover:text-red-400 transition-colors text-sm font-medium no-underline">
+								← Volver a Drones
+							</a>
+						</div>
+						<h1 
+							class="text-4xl md:text-6xl font-black text-white mb-4 tracking-tight"
+							style="font-family: 'Montserrat', sans-serif;"
+						>
+							Joyance JTC3<span class="text-red-600">0</span>
+						</h1>
+						<p class="text-xl text-gray-400 max-w-2xl">
+							Dron de limpieza a alta presión — máxima potencia industrial.
+						</p>
 					</div>
-					<h1 
-						class="text-4xl md:text-6xl font-black text-white mb-4 tracking-tight"
-						style="font-family: 'Montserrat', sans-serif;"
-					>
-						Joyance JTC3<span class="text-red-600">0</span>
-					</h1>
-					<p class="text-xl text-gray-300 max-w-2xl">
-						Dron de limpieza a alta presión — máxima potencia industrial.
-					</p>
 				</div>
 			</div>
 		</section>
@@ -149,8 +157,8 @@ import QuoteForm from '../../components/QuoteForm.vue';
 					</h2>
 					<div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 md:p-6">
 						<img 
-							src="/assets/images/agregados-joyance.jpeg" 
-							alt="Ficha técnica Joyance JTC30"
+							src="/assets/images/jtc30-attachments.webp" 
+							alt="Kit estándar Joyance JTC30 - Control remoto, baterías, bomba, manguera y accesorios"
 							class="w-full h-auto rounded-xl"
 						/>
 					</div>

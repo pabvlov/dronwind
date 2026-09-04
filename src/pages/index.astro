@@ -5,6 +5,7 @@ import HeroSection from '../components/HeroSection.vue';
 import VideoCarousel from '../components/VideoCarousel.vue';
 import BenefitsSection from '../components/BenefitsSection.vue';
 import DroneFeatures from '../components/DroneFeatures.vue';
+import SafetyComparison from '../components/SafetyComparison.vue';
 import WhatsAppButton from '../components/WhatsAppButton.vue';
 import QuoteModal from '../components/QuoteModal.vue';
 ---
@@ -116,14 +117,19 @@ import QuoteModal from '../components/QuoteModal.vue';
 						<!-- Imagen del dron -->
 						<div class="flex justify-center">
 							<img 
-								src="/assets/images/dron-compra.webp" 
-								alt="Drone Joyance JTC"
+								src="/assets/images/jtc30-banner.webp" 
+								alt="Drone Joyance JTC30 - Limpieza industrial"
 								class="w-full max-w-md h-auto drop-shadow-2xl rounded-2xl"
 							/>
 						</div>
 					</div>
 				</div>
 			</div>
+		</section>
+		
+		<!-- Sección Seguridad -->
+		<section id="seguridad">
+			<SafetyComparison client:visible />
 		</section>
 		
 		<!-- CTA Final / Contacto -->
