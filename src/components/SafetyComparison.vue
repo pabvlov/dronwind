@@ -26,37 +26,17 @@
                 alt="Trabajador en altura con riesgo de accidente"
                 class="w-full h-full object-cover"
               />
-              <!-- Subtle gradient overlay for depth -->
-              <div class="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
             </div>
 
-            <!-- Zoomed detail circle -->
+            <!-- Zoomed detail circle (bigger) -->
             <div 
-              class="absolute -top-4 -right-4 md:-top-6 md:-right-6 w-24 h-24 md:w-36 md:h-36 rounded-full overflow-hidden border-4 border-white shadow-2xl z-10"
+              class="absolute -top-6 -right-6 md:-top-8 md:-right-8 w-32 h-32 md:w-44 md:h-44 rounded-full overflow-hidden border-4 border-white shadow-2xl z-10"
             >
               <img 
-                src="/assets/images/hombre-colgando-zoomed.webp" 
+                src="/assets/images/hombre-colgando-zoomed-new.webp" 
                 alt="Detalle del riesgo - trabajador colgado de un edificio"
                 class="w-full h-full object-cover"
               />
-            </div>
-
-            <!-- Zoom label badge -->
-            <div 
-              class="absolute -top-4 -right-4 md:-top-6 md:-right-6 z-20 flex items-center justify-center"
-            >
-              <div class="bg-red-600 text-white text-[10px] md:text-xs font-bold px-2 py-1 rounded-full shadow-lg mt-1 mr-1">
-                ZOOM
-              </div>
-            </div>
-
-            <!-- Bottom caption -->
-            <div class="absolute bottom-4 left-4 right-4">
-              <div class="bg-black/60 backdrop-blur-sm rounded-xl px-4 py-3 text-center">
-                <p class="text-white text-sm md:text-base font-medium">
-                  La limpieza tradicional expone vidas. Nosotros no.
-                </p>
-              </div>
             </div>
           </div>
         </div>
