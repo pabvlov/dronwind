@@ -48,7 +48,23 @@ export const POST: APIRoute = async ({ request }) => {
         user: smtpUser,
         pass: smtpPass,
       },
+      connectionTimeout: 10000,
+      greetingTimeout: 10000,
+      socketTimeout: 10000,
     });
+
+    // Verify connection before sending
+    try {
+      console.log('[send-email] Verifying SMTP connection...');
+      await transporter.verify();
+      console.log('[send-email] SMTP connection verified OK');
+    } catch (verifyErr: any) {
+      console.error('[send-email] SMTP verify failed:', verifyErr.message || verifyErr);
+      return new Response(
+        JSON.stringify({ success: false, message: 'No se pudo conectar al servidor de correo. Verifica la configuración SMTP.' }),
+        { status: 500, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
 
     const toEmail = process.env.CONTACT_EMAIL?.trim() || 'contacto@dronwind.cl';
     const fromEmail = process.env.SMTP_FROM?.trim() || smtpUser;
