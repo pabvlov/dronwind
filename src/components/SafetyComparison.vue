@@ -16,62 +16,48 @@
           </p>
         </div>
 
-        <!-- Image comparison -->
-        <div 
-          ref="containerRef"
-          class="relative w-full max-w-4xl mx-auto aspect-[4/3] rounded-2xl overflow-hidden cursor-ew-resize select-none"
-          @mousemove="handleMove"
-          @touchmove="handleTouch"
-          @mousedown="startDrag"
-          @touchstart="startDrag"
-          @mouseup="stopDrag"
-          @touchend="stopDrag"
-          @mouseleave="stopDrag"
-        >
-          <!-- Background image (not zoomed / normal) -->
-          <img 
-            src="/assets/images/hombre-colgando-not-zoomed.webp" 
-            alt="Trabajador en altura con riesgo de accidente"
-            class="absolute inset-0 w-full h-full object-cover"
-            draggable="false"
-          />
-          
-          <!-- Overlay dark gradient for text readability -->
-          <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-
-          <!-- Zoomed image (revealed on drag) -->
-          <div 
-            class="absolute inset-0 overflow-hidden"
-            :style="{ clipPath: `inset(0 ${100 - position}% 0 0)` }"
-          >
-            <img 
-              src="/assets/images/hombre-colgando-zoomed.webp" 
-              alt="Detalle del riesgo de trabajar en altura"
-              class="absolute inset-0 w-full h-full object-cover"
-              draggable="false"
-            />
-            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-          </div>
-
-          <!-- Slider line -->
-          <div 
-            class="absolute top-0 bottom-0 w-1 bg-red-600 shadow-lg"
-            :style="{ left: `${position}%`, transform: 'translateX(-50%)' }"
-          >
-            <!-- Slider handle -->
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-red-600 rounded-full flex items-center justify-center shadow-xl border-2 border-white">
-              <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l4-4 4 4m0 6l-4 4-4-4"/>
-              </svg>
+        <!-- Photo composition -->
+        <div class="flex justify-center">
+          <div class="relative w-full max-w-xl">
+            <!-- Main photo (not zoomed) -->
+            <div class="aspect-square rounded-3xl overflow-hidden shadow-2xl">
+              <img 
+                src="/assets/images/hombre-colgando-not-zoomed.webp" 
+                alt="Trabajador en altura con riesgo de accidente"
+                class="w-full h-full object-cover"
+              />
+              <!-- Subtle gradient overlay for depth -->
+              <div class="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
             </div>
-          </div>
 
-          <!-- Labels -->
-          <div class="absolute bottom-6 left-6 bg-black/70 backdrop-blur-sm px-4 py-2 rounded-lg">
-            <span class="text-white text-sm font-semibold">Limpieza tradicional</span>
-          </div>
-          <div class="absolute bottom-6 right-6 bg-red-600/90 backdrop-blur-sm px-4 py-2 rounded-lg">
-            <span class="text-white text-sm font-semibold">Alto riesgo</span>
+            <!-- Zoomed detail circle -->
+            <div 
+              class="absolute -top-4 -right-4 md:-top-6 md:-right-6 w-24 h-24 md:w-36 md:h-36 rounded-full overflow-hidden border-4 border-white shadow-2xl z-10"
+            >
+              <img 
+                src="/assets/images/hombre-colgando-zoomed.webp" 
+                alt="Detalle del riesgo - trabajador colgado de un edificio"
+                class="w-full h-full object-cover"
+              />
+            </div>
+
+            <!-- Zoom label badge -->
+            <div 
+              class="absolute -top-4 -right-4 md:-top-6 md:-right-6 z-20 flex items-center justify-center"
+            >
+              <div class="bg-red-600 text-white text-[10px] md:text-xs font-bold px-2 py-1 rounded-full shadow-lg mt-1 mr-1">
+                ZOOM
+              </div>
+            </div>
+
+            <!-- Bottom caption -->
+            <div class="absolute bottom-4 left-4 right-4">
+              <div class="bg-black/60 backdrop-blur-sm rounded-xl px-4 py-3 text-center">
+                <p class="text-white text-sm md:text-base font-medium">
+                  La limpieza tradicional expone vidas. Nosotros no.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -91,48 +77,3 @@
     </div>
   </section>
 </template>
-
-<script setup lang="ts">
-import { ref, onMounted } from 'vue';
-
-const containerRef = ref<HTMLElement>();
-const position = ref(50);
-const isDragging = ref(false);
-
-const updatePosition = (clientX: number) => {
-  if (!containerRef.value) return;
-  const rect = containerRef.value.getBoundingClientRect();
-  const x = clientX - rect.left;
-  const pct = (x / rect.width) * 100;
-  position.value = Math.max(0, Math.min(100, pct));
-};
-
-const handleMove = (e: MouseEvent) => {
-  if (!isDragging.value) return;
-  updatePosition(e.clientX);
-};
-
-const handleTouch = (e: TouchEvent) => {
-  if (!isDragging.value) return;
-  e.preventDefault();
-  updatePosition(e.touches[0].clientX);
-};
-
-const startDrag = () => {
-  isDragging.value = true;
-};
-
-const stopDrag = () => {
-  isDragging.value = false;
-};
-
-onMounted(() => {
-  // Auto-animate slightly on load to hint interactivity
-  setTimeout(() => {
-    position.value = 45;
-    setTimeout(() => {
-      position.value = 50;
-    }, 400);
-  }, 800);
-});
-</script>
