@@ -22,9 +22,9 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
 
-    const apiKey = process.env.RESEND_API_KEY?.trim();
-    const toEmail = process.env.CONTACT_EMAIL?.trim() || 'contacto@dronwind.cl';
-    const fromEmail = process.env.SMTP_FROM?.trim() || 'contacto@dronwind.cl';
+    const apiKey = process.env.DW_RESEND_API_KEY?.trim() || process.env.RESEND_API_KEY?.trim();
+    const toEmail = process.env.DW_CONTACT_EMAIL?.trim() || process.env.CONTACT_EMAIL?.trim() || 'contacto@dronwind.cl';
+    const fromEmail = process.env.DW_SMTP_FROM?.trim() || process.env.SMTP_FROM?.trim() || 'contacto@dronwind.cl';
 
     if (!apiKey) {
       console.error('[send-email] RESEND_API_KEY not set');
