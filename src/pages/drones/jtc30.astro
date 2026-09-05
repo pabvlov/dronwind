@@ -12,6 +12,16 @@ import QuoteForm from '../../components/QuoteForm.vue';
 >
 	<Navigation transparent={false} client:load />
 
+	<!-- GA4: view_item event -->
+	<script>
+		if (typeof gtag !== 'undefined') {
+			gtag('event', 'view_item', {
+				event_category: 'product',
+				event_label: 'Joyance JTC30'
+			});
+		}
+	</script>
+
 	<!-- Breadcrumb Schema -->
 	<script type="application/ld+json" set:html={JSON.stringify({
 		"@context": "https://schema.org",

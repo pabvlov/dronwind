@@ -177,6 +177,15 @@ const handleSubmit = async () => {
     success.value = true;
     form.value = { name: '', rut: '', phone: '', email: '', comments: '' };
 
+    // Google Analytics event
+    if (typeof window !== 'undefined' && (window as any).gtag) {
+      (window as any).gtag('event', 'generate_lead', {
+        event_category: 'engagement',
+        event_label: props.model || 'No especificado',
+        value: 1
+      });
+    }
+
     setTimeout(() => {
       success.value = false;
     }, 6000);

@@ -6,6 +6,7 @@
     rel="noopener noreferrer"
     class="fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 bg-green-500 hover:bg-green-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 group"
     aria-label="Contactar por WhatsApp"
+    @click="trackWhatsAppClick"
   >
     <svg
       class="w-7 h-7"
@@ -26,4 +27,14 @@
 
 <script setup lang="ts">
 const whatsappLink = 'https://wa.me/56954080730';
+
+const trackWhatsAppClick = () => {
+  if (typeof window !== 'undefined' && (window as any).gtag) {
+    (window as any).gtag('event', 'click_whatsapp', {
+      event_category: 'engagement',
+      event_label: 'floating_button',
+      value: 1
+    });
+  }
+};
 </script>
