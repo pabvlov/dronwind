@@ -1,5 +1,4 @@
 import type { APIRoute } from 'astro';
-import nodemailer from 'nodemailer';
 
 export const POST: APIRoute = async ({ request }) => {
   try {
@@ -23,63 +22,62 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
 
-    const smtpHost = process.env.SMTP_HOST?.trim();
-    const smtpPort = Number(process.env.SMTP_PORT) || 587;
-    const smtpUser = process.env.SMTP_USER?.trim();
-    const smtpPass = process.env.SMTP_PASS?.trim();
+    const apiKey = process.env.RESEND_API_KEY?.trim();
+    const toEmail = process.env.CONTACT_EMAIL?.trim() || 'contacto@dronwind.cl';
+    const fromEmail = process.env.SMTP_FROM?.trim() || 'contacto@dronwind.cl';
 
-    console.log('[send-email] SMTP_HOST:', smtpHost ? 'SET' : 'EMPTY');
-    console.log('[send-email] SMTP_USER:', smtpUser ? 'SET' : 'EMPTY');
-    console.log('[send-email] SMTP_PASS:', smtpPass ? 'SET (' + smtpPass.length + ' chars)' : 'EMPTY');
-
-    if (!smtpHost || !smtpUser || !smtpPass) {
-      console.error('[send-email] Missing or empty SMTP env vars');
+    if (!apiKey) {
+      console.error('[send-email] RESEND_API_KEY not set');
       return new Response(
         JSON.stringify({ success: false, message: 'Servidor de correo no configurado. Contacta al administrador.' }),
         { status: 500, headers: { 'Content-Type': 'application/json' } }
       );
     }
 
-    const transporter = nodemailer.createTransport({
-      host: smtpHost,
-      port: smtpPort,
-      secure: String(smtpPort) === '465',
-      auth: {
-        user: smtpUser,
-        pass: smtpPass,
-      },
-      connectionTimeout: 10000,
-      greetingTimeout: 10000,
-      socketTimeout: 10000,
-    });
+    const htmlBody = `
+      <div style="font-family: 'Montserrat', system-ui, sans-serif; max-width: 600px; margin: 0 auto; color: #111827;">
+        <div style="background: linear-gradient(225deg, #b91c1c, #000000); padding: 32px; text-align: center; border-radius: 16px 16px 0 0;">
+          <h1 style="color: #ffffff; margin: 0; font-size: 24px; font-weight: 900;">Nueva solicitud de cotización</h1>
+          <p style="color: #d1d5db; margin: 8px 0 0;">Recibida desde dronwind.cl</p>
+        </div>
+        
+        <div style="background: #ffffff; padding: 32px; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 16px 16px;">
+          <h2 style="font-size: 18px; font-weight: 800; margin: 0 0 16px; color: #dc2626;">Modelo de interés</h2>
+          <p style="margin: 0 0 24px; font-size: 16px; font-weight: 600;">${model || 'No especificado'}</p>
+          
+          <h2 style="font-size: 18px; font-weight: 800; margin: 0 0 16px; color: #dc2626;">Datos de contacto</h2>
+          <table style="width: 100%; border-collapse: collapse; margin-bottom: 24px;">
+            <tr>
+              <td style="padding: 10px 0; border-bottom: 1px solid #f3f4f6; font-weight: 600; color: #6b7280; width: 40%;">Nombre / Empresa</td>
+              <td style="padding: 10px 0; border-bottom: 1px solid #f3f4f6; color: #111827;">${escapeHtml(name)}</td>
+            </tr>
+            <tr>
+              <td style="padding: 10px 0; border-bottom: 1px solid #f3f4f6; font-weight: 600; color: #6b7280;">RUT</td>
+              <td style="padding: 10px 0; border-bottom: 1px solid #f3f4f6; color: #111827;">${escapeHtml(rut || 'No proporcionado')}</td>
+            </tr>
+            <tr>
+              <td style="padding: 10px 0; border-bottom: 1px solid #f3f4f6; font-weight: 600; color: #6b7280;">Teléfono</td>
+              <td style="padding: 10px 0; border-bottom: 1px solid #f3f4f6; color: #111827;">${escapeHtml(phone)}</td>
+            </tr>
+            <tr>
+              <td style="padding: 10px 0; border-bottom: 1px solid #f3f4f6; font-weight: 600; color: #6b7280;">Correo</td>
+              <td style="padding: 10px 0; border-bottom: 1px solid #f3f4f6; color: #111827;">${escapeHtml(email)}</td>
+            </tr>
+          </table>
+          
+          <h2 style="font-size: 18px; font-weight: 800; margin: 0 0 16px; color: #dc2626;">Comentarios</h2>
+          <div style="background: #f9fafb; padding: 16px; border-radius: 12px; border: 1px solid #f3f4f6; white-space: pre-wrap; color: #374151; line-height: 1.6;">
+            ${escapeHtml(comments || 'Sin comentarios adicionales')}
+          </div>
+          
+          <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid #f3f4f6; text-align: center; color: #9ca3af; font-size: 12px;">
+            <p style="margin: 0;">Este correo fue generado automáticamente desde el formulario de cotización de dronwind.cl</p>
+          </div>
+        </div>
+      </div>
+    `;
 
-    // Verify connection before sending
-    try {
-      console.log('[send-email] Verifying SMTP connection...');
-      await transporter.verify();
-      console.log('[send-email] SMTP connection verified OK');
-    } catch (verifyErr: any) {
-      console.error('[send-email] SMTP verify failed:', verifyErr.message || verifyErr);
-      return new Response(
-        JSON.stringify({ success: false, message: 'No se pudo conectar al servidor de correo. Verifica la configuración SMTP.' }),
-        { status: 500, headers: { 'Content-Type': 'application/json' } }
-      );
-    }
-
-    const toEmail = process.env.CONTACT_EMAIL?.trim() || 'contacto@dronwind.cl';
-    const fromEmail = process.env.SMTP_FROM?.trim() || smtpUser;
-
-    const mailOptions = {
-      from: `"Formulario Dronwind" <${fromEmail}>`,
-      to: toEmail,
-      replyTo: email,
-      subject: `Nueva cotización: ${model || 'Dron'} - ${name}`,
-      priority: 'high',
-      headers: {
-        'X-Form-Source': 'dronwind.cl',
-        'X-Auto-Response-Suppress': 'OOF, AutoReply'
-      },
-      text: `
+    const textBody = `
 Nueva solicitud de cotización desde el sitio web dronwind.cl
 
 ==================================================
@@ -99,52 +97,35 @@ Correo:           ${email}
 COMENTARIOS
 ==================================================
 ${comments || 'Sin comentarios adicionales'}
-      `.trim(),
-      html: `
-        <div style="font-family: 'Montserrat', system-ui, sans-serif; max-width: 600px; margin: 0 auto; color: #111827;">
-          <div style="background: linear-gradient(225deg, #b91c1c, #000000); padding: 32px; text-align: center; border-radius: 16px 16px 0 0;">
-            <h1 style="color: #ffffff; margin: 0; font-size: 24px; font-weight: 900;">Nueva solicitud de cotización</h1>
-            <p style="color: #d1d5db; margin: 8px 0 0;">Recibida desde dronwind.cl</p>
-          </div>
-          
-          <div style="background: #ffffff; padding: 32px; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 16px 16px;">
-            <h2 style="font-size: 18px; font-weight: 800; margin: 0 0 16px; color: #dc2626;">Modelo de interés</h2>
-            <p style="margin: 0 0 24px; font-size: 16px; font-weight: 600;">${model || 'No especificado'}</p>
-            
-            <h2 style="font-size: 18px; font-weight: 800; margin: 0 0 16px; color: #dc2626;">Datos de contacto</h2>
-            <table style="width: 100%; border-collapse: collapse; margin-bottom: 24px;">
-              <tr>
-                <td style="padding: 10px 0; border-bottom: 1px solid #f3f4f6; font-weight: 600; color: #6b7280; width: 40%;">Nombre / Empresa</td>
-                <td style="padding: 10px 0; border-bottom: 1px solid #f3f4f6; color: #111827;">${escapeHtml(name)}</td>
-              </tr>
-              <tr>
-                <td style="padding: 10px 0; border-bottom: 1px solid #f3f4f6; font-weight: 600; color: #6b7280;">RUT</td>
-                <td style="padding: 10px 0; border-bottom: 1px solid #f3f4f6; color: #111827;">${escapeHtml(rut || 'No proporcionado')}</td>
-              </tr>
-              <tr>
-                <td style="padding: 10px 0; border-bottom: 1px solid #f3f4f6; font-weight: 600; color: #6b7280;">Teléfono</td>
-                <td style="padding: 10px 0; border-bottom: 1px solid #f3f4f6; color: #111827;">${escapeHtml(phone)}</td>
-              </tr>
-              <tr>
-                <td style="padding: 10px 0; border-bottom: 1px solid #f3f4f6; font-weight: 600; color: #6b7280;">Correo</td>
-                <td style="padding: 10px 0; border-bottom: 1px solid #f3f4f6; color: #111827;">${escapeHtml(email)}</td>
-              </tr>
-            </table>
-            
-            <h2 style="font-size: 18px; font-weight: 800; margin: 0 0 16px; color: #dc2626;">Comentarios</h2>
-            <div style="background: #f9fafb; padding: 16px; border-radius: 12px; border: 1px solid #f3f4f6; white-space: pre-wrap; color: #374151; line-height: 1.6;">
-              ${escapeHtml(comments || 'Sin comentarios adicionales')}
-            </div>
-            
-            <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid #f3f4f6; text-align: center; color: #9ca3af; font-size: 12px;">
-              <p style="margin: 0;">Este correo fue generado automáticamente desde el formulario de cotización de dronwind.cl</p>
-            </div>
-          </div>
-        </div>
-      `,
-    };
+    `.trim();
 
-    await transporter.sendMail(mailOptions);
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        from: `"Formulario Dronwind" <${fromEmail}>`,
+        to: [toEmail],
+        reply_to: email,
+        subject: `Nueva cotización: ${model || 'Dron'} - ${name}`,
+        text: textBody,
+        html: htmlBody,
+      }),
+    });
+
+    const resData = await res.json().catch(() => ({}));
+
+    if (!res.ok) {
+      console.error('[send-email] Resend error:', res.status, resData);
+      return new Response(
+        JSON.stringify({ success: false, message: resData.message || 'Error al enviar el correo. Intenta más tarde.' }),
+        { status: 500, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
+    console.log('[send-email] Email sent via Resend, id:', resData.id);
 
     return new Response(
       JSON.stringify({ success: true, message: 'Correo enviado correctamente' }),
